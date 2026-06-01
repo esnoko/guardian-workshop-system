@@ -1,7 +1,7 @@
 Phase 1
-- Laravel setup
-- GitHub setup
-- DB schema
+- Laravel setup - Done
+- GitHub setup - Done
+- DB schema - In progress
 
 Phase 2
 - Workshop info page
