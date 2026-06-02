@@ -20,8 +20,6 @@ class WorkshopSession extends Model
 
     protected $casts = [
         'session_date' => 'date',
-        'start_time' => 'time',
-        'end_time' => 'time',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

@@ -1,0 +1,128 @@
+.section-shell {
+    padding: 1rem 2.2rem 0;
+}
+
+.month-row {
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.month-pill {
+    min-width: 126px;
+    background: var(--lime);
+    border-radius: 999px;
+    color: #f4f7ec;
+    font-weight: 700;
+    font-size: 0.74rem;
+    letter-spacing: 0.04em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0.29rem 0.62rem;
+    line-height: 1;
+}
+
+.month-icon,
+.session-cal {
+    display: inline-grid;
+    place-items: center;
+    color: #d9e79a;
+}
+
+.month-icon svg,
+.session-cal svg {
+    display: block;
+}
+
+.month-line {
+    flex: 1;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--line);
+}
+
+.month-title {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+}
+
+.sessions-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.6rem 1.8rem;
+    margin-top: 1.15rem;
+}
+
+.session-card {
+    min-height: 126px;
+}
+
+.session-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.7rem;
+}
+
+.session-meta {
+    min-width: 0;
+}
+
+.session-date {
+    font-weight: 700;
+    font-size: 0.83rem;
+    margin: 0;
+    line-height: 1.25;
+}
+
+.session-time {
+    color: #272727;
+    margin: 0.2rem 0 0;
+    font-size: 0.78rem;
+    line-height: 1.3;
+}
+
+.book-btn {
+    border: 2px solid var(--line);
+    color: var(--button-text);
+    background: transparent;
+    border-radius: 999px;
+    width: 100%;
+    padding: 0.33rem 0.9rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.session-cal {
+    width: 20px;
+    height: 20px;
+    margin-top: 0.05rem;
+    color: #d3e38a;
+    flex: 0 0 auto;
+}
+
+@media (max-width: 860px) {
+    .section-shell {
+        padding: 0.9rem 1rem 0;
+    }
+
+    .sessions-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem 0.9rem;
+    }
+
+    .session-date {
+        font-size: 0.8rem;
+    }
+
+    .session-time {
+        font-size: 0.75rem;
+    }
+}
