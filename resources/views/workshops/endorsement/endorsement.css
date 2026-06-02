@@ -1,0 +1,89 @@
+.endorsement {
+    display: grid;
+    grid-template-columns: 1fr 170px;
+    gap: 1.1rem;
+    align-items: end;
+    padding: 2rem 2.2rem 2.6rem;
+}
+
+.endorsement-note {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.45;
+    color: #232323;
+}
+
+.note-block {
+    display: grid;
+    grid-template-columns: 34px 1fr;
+    gap: 0.55rem;
+    margin-bottom: 0.95rem;
+}
+
+.note-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--lime);
+    color: #f3f7e6;
+    display: grid;
+    place-items: center;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-top: 0.2rem;
+}
+
+.sace-badge {
+    justify-self: end;
+    width: 148px;
+    border: 2px solid #d1d1d1;
+    border-radius: 0.4rem;
+    background: #fffdf8;
+    padding: 0.55rem;
+    text-align: center;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.08);
+}
+
+.sace-badge .sace-top {
+    margin: 0 auto 0.5rem;
+    width: 66px;
+    height: 45px;
+    border-radius: 0 0 50% 50%;
+    background: linear-gradient(90deg, #e94734 0 36%, #f3cb1e 36% 68%, #7aba40 68%);
+}
+
+.sace-badge strong {
+    display: block;
+    letter-spacing: 0.36em;
+    font-size: 1.4rem;
+    line-height: 1;
+}
+
+.sace-badge small {
+    display: block;
+    margin-top: 0.18rem;
+    font-size: 0.58rem;
+    color: #4f4f4f;
+}
+
+.page-footer {
+    padding: 0.95rem 2.2rem 1.3rem;
+    color: #f1f1f1;
+    font-size: 0.92rem;
+    background: #4a4a4a;
+}
+
+@media (max-width: 860px) {
+    .endorsement {
+        grid-template-columns: 1fr;
+        padding: 1.4rem 1rem 1.8rem;
+    }
+
+    .sace-badge {
+        justify-self: start;
+    }
+
+    .page-footer {
+        padding: 0.9rem 1rem;
+    }
+}
