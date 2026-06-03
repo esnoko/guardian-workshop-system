@@ -7,27 +7,40 @@
         </div>
     </header>
 
-    <form class="registration-form" action="#" method="post">
-        @csrf
+    @if ($errors->any())
+        <div class="form-errors">
+            <p class="form-errors-title">Please correct the following errors:</p>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
+    <div class="registration-form">
         <label>
             Full Name<span class="required">*</span>
-            <input type="text" name="full_name" placeholder="Enter full name and surname" required>
+            <input type="text" name="full_name" placeholder="Enter full name and surname" value="{{ old('full_name') }}" required>
+            @error('full_name')<span class="field-error">{{ $message }}</span>@enderror
         </label>
 
         <label>
             School Name<span class="required">*</span>
-            <input type="text" name="school_name" placeholder="Enter your school name" required>
+            <input type="text" name="school_name" placeholder="Enter your school name" value="{{ old('school_name') }}" required>
+            @error('school_name')<span class="field-error">{{ $message }}</span>@enderror
         </label>
 
         <label>
             Email Address<span class="required">*</span>
-            <input type="email" name="email_address" placeholder="Enter your email address" required>
+            <input type="email" name="email_address" placeholder="Enter your email address" value="{{ old('email_address') }}" required>
+            @error('email_address')<span class="field-error">{{ $message }}</span>@enderror
         </label>
 
         <label>
             Phone Number<span class="required">*</span>
-            <input type="text" name="phone_number" placeholder="Enter your phone number" required>
+            <input type="text" name="phone_number" placeholder="Enter your phone number" value="{{ old('phone_number') }}" required>
+            @error('phone_number')<span class="field-error">{{ $message }}</span>@enderror
         </label>
 
         <div class="split-fields">
@@ -35,26 +48,37 @@
                 Province / Region<span class="required">*</span>
                 <select name="province_region" required>
                     <option value="">Select Province/Region</option>
-                    <option>Gauteng</option>
-                    <option>Western Cape</option>
-                    <option>KwaZulu-Natal</option>
+                    <option value="Gauteng" {{ old('province_region') === 'Gauteng' ? 'selected' : '' }}>Gauteng</option>
+                    <option value="Western Cape" {{ old('province_region') === 'Western Cape' ? 'selected' : '' }}>Western Cape</option>
+                    <option value="KwaZulu-Natal" {{ old('province_region') === 'KwaZulu-Natal' ? 'selected' : '' }}>KwaZulu-Natal</option>
+                    <option value="Eastern Cape" {{ old('province_region') === 'Eastern Cape' ? 'selected' : '' }}>Eastern Cape</option>
+                    <option value="Northern Cape" {{ old('province_region') === 'Northern Cape' ? 'selected' : '' }}>Northern Cape</option>
+                    <option value="Free State" {{ old('province_region') === 'Free State' ? 'selected' : '' }}>Free State</option>
+                    <option value="Limpopo" {{ old('province_region') === 'Limpopo' ? 'selected' : '' }}>Limpopo</option>
+                    <option value="Mpumalanga" {{ old('province_region') === 'Mpumalanga' ? 'selected' : '' }}>Mpumalanga</option>
                 </select>
+                @error('province_region')<span class="field-error">{{ $message }}</span>@enderror
             </label>
 
             <label>
                 District<span class="required">*</span>
                 <select name="district" required>
                     <option value="">Select District</option>
-                    <option>Johannesburg North</option>
-                    <option>Johannesburg South</option>
-                    <option>Ekurhuleni</option>
+                    <option value="Johannesburg North" {{ old('district') === 'Johannesburg North' ? 'selected' : '' }}>Johannesburg North</option>
+                    <option value="Johannesburg South" {{ old('district') === 'Johannesburg South' ? 'selected' : '' }}>Johannesburg South</option>
+                    <option value="Ekurhuleni" {{ old('district') === 'Ekurhuleni' ? 'selected' : '' }}>Ekurhuleni</option>
+                    <option value="Tshwane" {{ old('district') === 'Tshwane' ? 'selected' : '' }}>Tshwane</option>
                 </select>
+                @error('district')<span class="field-error">{{ $message }}</span>@enderror
             </label>
         </div>
 
         <label>
-            Position / Role
-            <input type="text" name="position_role" placeholder="Enter your position / Role">
+            Position / Role<span class="required">*</span>
+            <input type="text" name="position_role" placeholder="Enter your position / Role" value="{{ old('position_role') }}" required>
+            @error('position_role')<span class="field-error">{{ $message }}</span>@enderror
         </label>
-    </form>
+
+        <input type="hidden" name="ticket_count" id="ticketCountInput" value="{{ old('ticket_count', $selectedTickets) }}">
+    </div>
 </article>

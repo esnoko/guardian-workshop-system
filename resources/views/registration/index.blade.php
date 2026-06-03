@@ -58,15 +58,64 @@
             <div class="registration-wrap">
                 @include('registration.header.index')
 
-                <section class="registration-grid">
-                    @include('registration.form.index')
-                    @include('registration.summary.index')
-                </section>
+                @if (session('error'))
+                    <div class="flash-message flash-error">
+                        <p>{{ session('error') }}</p>
+                    </div>
+                @endif
 
-                @include('registration.continue.index')
+                @if (session('success'))
+                    <div class="flash-message flash-success">
+                        <p>{{ session('success') }}</p>
+                    </div>
+                @endif
+
+                <form class="registration-form-wrapper" action="{{ route('registrations.store', ['session' => $session->id]) }}" method="post" id="registrationForm">
+                    @csrf
+
+                    <section class="registration-grid">
+                        @include('registration.form.index')
+                        @include('registration.summary.index')
+                    </section>
+
+                    @include('registration.continue.index')
+                </form>
             </div>
 
             @include('components.endorsement.index')
         </main>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const ticketOptions = document.querySelectorAll('.ticket-option');
+                const ticketCountInput = document.getElementById('ticketCountInput');
+                const subtotalElement = document.querySelector('.price-line:nth-child(6) strong');
+                const grandTotalElement = document.querySelector('.price-line.grand strong');
+
+                ticketOptions.forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        // Remove active class from all buttons
+                        ticketOptions.forEach(btn => btn.classList.remove('active'));
+                        
+                        // Add active class to clicked button
+                        this.classList.add('active');
+                        
+                        // Update hidden input
+                        ticketCountInput.value = this.dataset.ticketCount;
+                        
+                        // Update display values
+                        const subtotal = parseFloat(this.dataset.subtotal);
+                        const grandTotal = parseFloat(this.dataset.grandTotal);
+                        
+                        if (subtotalElement && grandTotalElement) {
+                            subtotalElement.textContent = 'R' + subtotal.toFixed(2);
+                            grandTotalElement.textContent = 'R' + grandTotal.toFixed(2);
+                        }
+                    });
+                });
+            });
+        </script>
     </body>
 </html>

@@ -1,3 +1,3 @@
 <div class="continue-wrap">
-    <button type="button" class="continue-btn">Continue</button>
+    <button type="submit" class="continue-btn">Continue to Payment</button>
 </div>
