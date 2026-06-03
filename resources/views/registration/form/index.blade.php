@@ -1,6 +1,6 @@
 <article class="registration-form-card">
     <header class="panel-head">
-        <span class="panel-icon" aria-hidden="true">&#128100;</span>
+        <img src="{{ asset('images/Attendee_profile.png') }}" alt="Attendee profile" class="panel-icon-img">
         <div>
             <h2>Attendee Information</h2>
             <p>Please fill in your details below</p>
