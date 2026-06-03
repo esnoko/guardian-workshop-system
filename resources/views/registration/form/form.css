@@ -14,11 +14,22 @@
 .panel-icon {
     width: 1.6rem;
     height: 1.6rem;
+    min-width: 1.6rem;
     border-radius: 999px;
     background: var(--lime);
-    display: inline-grid;
+    display: grid;
     place-items: center;
-    font-size: 0.95rem;
+    flex-shrink: 0;
+    stroke: #2a2a2a;
+    stroke-width: 1.5px;
+}
+
+.panel-icon-img {
+    width: 1.8rem;
+    height: 1.8rem;
+    min-width: 1.8rem;
+    object-fit: contain;
+    flex-shrink: 0;
 }
 
 .panel-head h2 {
