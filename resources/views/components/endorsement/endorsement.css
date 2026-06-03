@@ -23,57 +23,91 @@
 .note-icon {
     width: 34px;
     height: 34px;
+    min-width: 34px;
+    border-radius: 50%;
+    background: var(--lime);
+    color: #2a2a2a;
     display: grid;
     place-items: center;
+    flex-shrink: 0;
+    stroke: #2a2a2a;
+    stroke-width: 1.2px;
+    margin-top: 0.2rem;
 }
 
 .note-icon-img {
-    width: 100%;
-    height: 100%;
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    object-fit: contain;
+    flex-shrink: 0;
+    margin-top: 0;
+}
+
+.tekete-logo {
+    justify-self: end;
+    max-width: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.tekete-brand-logo {
+    max-width: 100%;
+    height: auto;
+    max-height: 120px;
     object-fit: contain;
 }
 
-.sace-badge {
+.sace-logos {
+    justify-self: end;
+    max-width: 180px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 1rem;
+    justify-content: flex-end;
 }
 
-.sace-logo {
-    width: 220px;
+.sace-logo-main {
     max-width: 100%;
     height: auto;
-    display: block;
-}
-
-.sace-badge .sace-top {
-    margin: 0 auto 0.5rem;
-    width: 66px;
-    height: 45px;
-    border-radius: 0 0 50% 50%;
-    background: linear-gradient(90deg, #e94734 0 36%, #f3cb1e 36% 68%, #7aba40 68%);
-}
-
-.sace-badge strong {
-    display: block;
-    letter-spacing: 0.36em;
-    font-size: 1.4rem;
-    line-height: 1;
-}
-
-.sace-badge small {
-    display: block;
-    margin-top: 0.18rem;
-    font-size: 0.58rem;
-    color: #4f4f4f;
+    max-height: 140px;
+    object-fit: contain;
 }
 
 .page-footer {
     padding: 0.95rem 2.2rem 1.3rem;
+    background: #4a4a4a;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.page-footer p {
+    margin: 0;
     color: #f1f1f1;
     font-size: 0.92rem;
-    background: #4a4a4a;
+}
+
+.payment-methods {
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+}
+
+.payment-logo {
+    max-height: 32px;
+    height: auto;
+    object-fit: contain;
+    opacity: 0.85;
+    transition: opacity 0.2s ease;
+}
+
+.payment-logo:hover {
+    opacity: 1;
 }
 
 @media (max-width: 860px) {
@@ -82,11 +116,25 @@
         padding: 1.4rem 1rem 1.8rem;
     }
 
-    .sace-badge {
+    .sace-logos {
+        justify-self: start;
+    }
+
+    .tekete-logo {
         justify-self: start;
     }
 
     .page-footer {
         padding: 0.9rem 1rem;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.6rem;
+    }
+
+    .payment-methods {
+        gap: 0.8rem;
     }
 }
