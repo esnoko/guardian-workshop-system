@@ -14,11 +14,11 @@
         <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;700;800&display=swap" rel="stylesheet">
 
         @php
-            $baseCssPath = resource_path('views/workshops/base/base.css');
-            $navbarCssPath = resource_path('views/workshops/navbar/navbar.css');
+            $baseCssPath = resource_path('views/global/base.css');
+            $navbarCssPath = resource_path('views/components/navbar/navbar.css');
             $heroCssPath = resource_path('views/workshops/hero/hero.css');
             $calendarCssPath = resource_path('views/workshops/calendar/calendar.css');
-            $endorsementCssPath = resource_path('views/workshops/endorsement/endorsement.css');
+            $endorsementCssPath = resource_path('views/components/endorsement/endorsement.css');
         @endphp
 
         @if (file_exists($baseCssPath))
@@ -51,10 +51,10 @@
                     : collect();
             @endphp
 
-            @include('workshops.navbar.index')
+            @include('components.navbar.index')
             @include('workshops.hero.index')
             @include('workshops.calendar.index')
-            @include('workshops.endorsement.index')
+            @include('components.endorsement.index')
         </main>
     </body>
 </html>
