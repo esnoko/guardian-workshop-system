@@ -1,0 +1,16 @@
+.continue-wrap {
+    display: flex;
+    justify-content: center;
+    margin: 0.9rem 0 1rem;
+}
+
+.continue-btn {
+    min-width: 138px;
+    border: 2px solid var(--line);
+    background: transparent;
+    color: #5da7b2;
+    border-radius: 999px;
+    font-weight: 600;
+    padding: 0.46rem 1.2rem;
+    cursor: pointer;
+}

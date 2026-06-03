@@ -1,0 +1,86 @@
+.registration-form-card {
+    border: 1px solid var(--line);
+    background: #ececec;
+    padding: 0.75rem;
+}
+
+.panel-head {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-bottom: 0.7rem;
+}
+
+.panel-icon {
+    width: 1.6rem;
+    height: 1.6rem;
+    min-width: 1.6rem;
+    border-radius: 999px;
+    background: var(--lime);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    stroke: #2a2a2a;
+    stroke-width: 1.5px;
+}
+
+.panel-icon-img {
+    width: 1.8rem;
+    height: 1.8rem;
+    min-width: 1.8rem;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.panel-head h2 {
+    margin: 0;
+    font-size: 1.08rem;
+    font-weight: 800;
+}
+
+.panel-head p {
+    margin: 0;
+    font-size: 0.84rem;
+}
+
+.registration-form {
+    display: grid;
+    gap: 0.45rem;
+}
+
+.registration-form label {
+    display: grid;
+    gap: 0.15rem;
+    font-size: 0.94rem;
+    font-weight: 700;
+}
+
+.required {
+    color: #d43d2d;
+}
+
+.registration-form input,
+.registration-form select {
+    border: 1px solid var(--line);
+    background: #f0f0f0;
+    padding: 0.42rem 0.5rem;
+    font: inherit;
+    font-size: 0.9rem;
+    color: #2a2a2a;
+}
+
+.registration-form input::placeholder {
+    color: #999;
+}
+
+.split-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.45rem;
+}
+
+@media (max-width: 720px) {
+    .split-fields {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,25 @@
+:root {
+    --lime: #c7da30;
+    --lime-dark: #8ea524;
+    --text: #101010;
+    --muted: #4f4f4f;
+    --subtle: #8a8a8a;
+    --page: #ececec;
+    --line: #c9dc73;
+    --button-text: #5da7b2;
+}
+
+body {
+    margin: 0;
+    font-family: "Manrope", "Segoe UI", sans-serif;
+    background: var(--page);
+    color: var(--text);
+}
+
+.page-shell {
+    width: 100%;
+    max-width: none;
+    margin: 0 auto;
+    background: var(--page);
+    min-height: 100vh;
+}
