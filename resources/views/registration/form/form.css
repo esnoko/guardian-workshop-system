@@ -1,0 +1,41 @@
+.registration-form {
+    display: grid;
+    gap: 0.45rem;
+}
+
+.registration-form label {
+    display: grid;
+    gap: 0.15rem;
+    font-size: 0.94rem;
+    font-weight: 700;
+}
+
+.required {
+    color: #d43d2d;
+}
+
+.registration-form input,
+.registration-form select {
+    border: 1px solid var(--line);
+    background: #f0f0f0;
+    padding: 0.42rem 0.5rem;
+    font: inherit;
+    font-size: 0.9rem;
+    color: #2a2a2a;
+}
+
+.registration-form input::placeholder {
+    color: #999;
+}
+
+.split-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.45rem;
+}
+
+@media (max-width: 720px) {
+    .split-fields {
+        grid-template-columns: 1fr;
+    }
+}
