@@ -79,6 +79,47 @@
     gap: 0.45rem;
 }
 
+.form-errors {
+    background: #fee;
+    border: 1px solid #fcc;
+    border-radius: 0.3rem;
+    padding: 0.6rem;
+    margin-bottom: 0.8rem;
+}
+
+.form-errors-title {
+    margin: 0 0 0.4rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #d43d2d;
+}
+
+.form-errors ul {
+    margin: 0;
+    padding-left: 1.2rem;
+    list-style: disc;
+}
+
+.form-errors li {
+    margin: 0.2rem 0;
+    font-size: 0.85rem;
+    color: #c23;
+}
+
+.field-error {
+    display: block;
+    margin-top: 0.2rem;
+    font-size: 0.8rem;
+    color: #d43d2d;
+    font-weight: 500;
+}
+
+.registration-form input:invalid,
+.registration-form select:invalid {
+    border-color: #fcc;
+    background-color: #fff9f9;
+}
+
 @media (max-width: 720px) {
     .split-fields {
         grid-template-columns: 1fr;

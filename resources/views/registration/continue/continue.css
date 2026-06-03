@@ -2,6 +2,7 @@
     display: flex;
     justify-content: center;
     margin: 0.9rem 0 1rem;
+    padding: 0 2.2rem;
 }
 
 .continue-btn {
@@ -13,4 +14,28 @@
     font-weight: 600;
     padding: 0.46rem 1.2rem;
     cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
+}
+
+.continue-btn:hover {
+    border-color: var(--lime);
+    background: var(--lime);
+    color: #2a2a2a;
+}
+
+.continue-btn:active {
+    transform: scale(0.98);
+}
+
+@media (max-width: 1180px) {
+    .continue-wrap {
+        padding: 0 1.5rem;
+    }
+}
+
+@media (max-width: 860px) {
+    .continue-wrap {
+        padding: 0 0.9rem;
+    }
 }

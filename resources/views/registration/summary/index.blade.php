@@ -24,7 +24,7 @@
         <p>Number of tickets <small>(Max 3 per email)</small></p>
         <div class="ticket-options" role="group" aria-label="Number of tickets">
             @foreach($ticketOptions as $count)
-                <button type="button" class="ticket-option {{ $count === $selectedTickets ? 'active' : '' }}">
+                <button type="button" class="ticket-option {{ $count === $selectedTickets ? 'active' : '' }}" data-ticket-count="{{ $count }}" data-ticket-price="{{ $ticketPrice }}" data-subtotal="{{ $ticketPrice * $count }}" data-grand-total="{{ $ticketPrice * $count * 1.15 }}">
                     <span class="ticket-count">{{ $count }}</span>
                     <span class="ticket-avatars">
                         @for($i = 1; $i <= $count; $i++)

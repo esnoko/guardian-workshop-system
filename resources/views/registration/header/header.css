@@ -22,6 +22,36 @@
     letter-spacing: -0.012em;
 }
 
+.flash-message {
+    margin: 0.8rem 0 1rem;
+    padding: 0.8rem 1rem;
+    border-radius: 0.35rem;
+    font-size: 0.95rem;
+    animation: slideDown 0.3s ease-out;
+}
+
+.flash-error {
+    background: #fee;
+    border: 1px solid #fcc;
+    color: #c23;
+}
+
+.flash-error p {
+    margin: 0;
+    font-weight: 500;
+}
+
+.flash-success {
+    background: #efe;
+    border: 1px solid #cfc;
+    color: #2a5c2a;
+}
+
+.flash-success p {
+    margin: 0;
+    font-weight: 500;
+}
+
 .registration-grid {
     display: grid;
     grid-template-columns: 1fr 0.95fr;
