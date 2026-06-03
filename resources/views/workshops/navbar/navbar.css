@@ -1,7 +1,7 @@
 .topbar {
     display: flex;
     flex-direction: row;
-    padding: 1.8rem 4.3rem 1.05rem;
+    padding: 0 4.3rem 0;
 }
 
 .topbar-brand-row {
@@ -99,7 +99,7 @@
 
 .brand-logo {
     display: block;
-    height: 128px;
+    height: 150px;
     width: auto;
 }
 
