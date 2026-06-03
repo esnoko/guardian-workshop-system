@@ -37,7 +37,7 @@
                                 </p>
                             </div>
                         </div>
-                        <button type="button" class="book-btn">Book Now</button>
+                        <a href="{{ route('workshops.register', $session) }}" class="book-btn">Book Now</a>
                     </article>
                 @endforeach
             </div>
