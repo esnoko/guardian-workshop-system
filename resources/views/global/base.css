@@ -9,6 +9,18 @@
     --button-text: #5da7b2;
 }
 
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 body {
     margin: 0;
     font-family: "Manrope", "Segoe UI", sans-serif;
@@ -22,4 +34,41 @@ body {
     margin: 0 auto;
     background: var(--page);
     min-height: 100vh;
+}
+
+.registration-form-wrapper {
+    display: contents;
+}
+
+.registration-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.1rem;
+    padding: 0 2.2rem;
+    margin-bottom: 1rem;
+}
+
+.registration-wrap {
+    padding-top: 2rem;
+}
+
+@media (max-width: 1180px) {
+    .registration-grid {
+        grid-template-columns: 1fr;
+        padding: 0 1.5rem;
+    }
+
+    .registration-wrap {
+        padding-top: 1.5rem;
+    }
+}
+
+@media (max-width: 860px) {
+    .registration-grid {
+        padding: 0 0.9rem;
+    }
+
+    .registration-wrap {
+        padding-top: 1rem;
+    }
 }
