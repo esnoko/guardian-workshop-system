@@ -1,6 +1,6 @@
 .registration-form-card {
     border: 1px solid var(--line);
-    background: #ececec;
+    background: #ffffff;
     padding: 0.75rem;
 }
 
@@ -51,7 +51,7 @@
 .registration-form input,
 .registration-form select {
     border: 1px solid var(--line);
-    background: #f0f0f0;
+    background: #ffffff;
     padding: 0.42rem 0.5rem;
     font: inherit;
     font-size: 0.9rem;

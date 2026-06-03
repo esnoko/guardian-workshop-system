@@ -1,92 +1,104 @@
 .endorsement {
     display: grid;
-    grid-template-columns: 1fr 170px;
-    gap: 1.1rem;
-    align-items: end;
-    padding: 2rem 2.2rem 2.6rem;
+    grid-template-columns: 1fr 240px;
+    gap: 2.5rem;
+    align-items: center;
+    padding: 3rem 3.5rem;
+    background: #ffffff;
+    width: 100%;
 }
 
-.endorsement-note {
-    margin: 0;
-    font-size: 1rem;
-    line-height: 1.45;
-    color: #232323;
+.endorsement-content {
+    display: flex;
+    flex-direction: column;
 }
 
+/* --- PARAGRAPH ROW SPLITTER --- */
+.endorsement-divider {
+    height: 2px;
+    background-color: var(--line);
+    margin: 1.2rem 0 1.5rem 4rem;
+    width: 100%;
+}
+
+/* --- DESCRIPTION BLOCKS --- */
 .note-block {
     display: grid;
-    grid-template-columns: 34px 1fr;
-    gap: 0.55rem;
-    margin-bottom: 0.95rem;
+    grid-template-columns: 42px 1fr;
+    gap: 1.2rem;
+    align-items: start;
 }
 
 .note-icon {
-    width: 34px;
-    height: 34px;
-    display: grid;
-    place-items: center;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: start;
+    justify-content: center;
 }
 
 .note-icon-img {
     width: 100%;
     height: 100%;
     object-fit: contain;
+    align-items: flex-start;
 }
 
+.endorsement-note {
+    margin: 0;
+    font-family: "Montserrat", sans-serif; /* [cite: 237] */
+    font-size: 20.9px;                    /* Unified paragraph size spec [cite: 238, 279] */
+    line-height: 1.5;
+    color: #000000;                       /* Standard clear absolute dark text layer */
+    font-weight: 500;
+}
+
+/* --- RIGHT CONTAINER BADGE --- */
 .sace-badge {
     display: flex;
-    align-items: center;
+    align-items: end;
     justify-content: center;
-    padding: 1rem;
 }
 
 .sace-logo {
-    width: 220px;
-    max-width: 100%;
-    height: auto;
+    width: 230.7px;  /* [cite: 225] */
+    height: 239.4px; /* Matches exact extracted grid metrics row [cite: 226] */
     display: block;
+    object-fit: contain;
 }
 
-.sace-badge .sace-top {
-    margin: 0 auto 0.5rem;
-    width: 66px;
-    height: 45px;
-    border-radius: 0 0 50% 50%;
-    background: linear-gradient(90deg, #e94734 0 36%, #f3cb1e 36% 68%, #7aba40 68%);
-}
-
-.sace-badge strong {
-    display: block;
-    letter-spacing: 0.36em;
-    font-size: 1.4rem;
-    line-height: 1;
-}
-
-.sace-badge small {
-    display: block;
-    margin-top: 0.18rem;
-    font-size: 0.58rem;
-    color: #4f4f4f;
-}
-
+/* --- FOOTER CONTAINER SPECIFICATIONS --- */
 .page-footer {
-    padding: 0.95rem 2.2rem 1.3rem;
-    color: #f1f1f1;
-    font-size: 0.92rem;
-    background: #4a4a4a;
+    padding: 2rem 4.3rem;
+    color: #ffffff; /* [cite: 213, 222] */
+    font-family: "Montserrat", sans-serif; /* [cite: 211, 221] */
+    font-size: 16.9px;                     /* Exact font dimension mapping token [cite: 212, 221] */
+    font-weight: 500;
+    background-color: #737373;              /* Exact background shade variable  */
+    letter-spacing: 0.01em;
+    width: 100%;
+}
+
+/* --- MOBILE ADAPTABILITY SHIFTS --- */
+@media (max-width: 1024px) {
+    .endorsement {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+        padding: 2.5rem 2rem;
+    }
+    .sace-badge {
+        justify-content: center;
+    }
+    .page-footer {
+        padding: 2rem 2rem;
+    }
 }
 
 @media (max-width: 860px) {
     .endorsement {
-        grid-template-columns: 1fr;
-        padding: 1.4rem 1rem 1.8rem;
+        padding: 2rem 1rem;
     }
-
-    .sace-badge {
-        justify-self: start;
-    }
-
     .page-footer {
-        padding: 0.9rem 1rem;
+        padding: 1.5rem 1rem;
     }
 }

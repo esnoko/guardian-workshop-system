@@ -1,25 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;600;700;800&display=swap');
+
 :root {
-    --lime: #c7da30;
+    --lime: #c7da30;         /* [cite: 173, 203] */
     --lime-dark: #8ea524;
-    --text: #101010;
-    --muted: #4f4f4f;
+    --text: #000000;         /* Pure black matching spec [cite: 149, 182, 192, 261, 270] */
+    --muted: #737373;        /* Specification Footer background tint  */
     --subtle: #8a8a8a;
-    --page: #ececec;
-    --line: #c9dc73;
-    --button-text: #5da7b2;
+    --page: #ffffff;         /* Pure white background [cite: 145, 183, 262, 271] */
+    --line: #c7da30;
+    --button-text: #00a3c4;
 }
 
-body {
+/* Global Reset for layout calculation layout limits */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html, body {
     margin: 0;
-    font-family: "Manrope", "Segoe UI", sans-serif;
-    background: var(--page);
-    color: var(--text);
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;      /* Prevents horizontal overflow scroll leaks */
+    overflow-y: auto;        /* Native smooth vertical scroll tracking */
+    font-family: "Open Sans", "Segoe UI", sans-serif; /* Fallback baseline [cite: 180] */
+    background: var(--page); /* [cite: 145] */
+    color: var(--text);      /* [cite: 149] */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .page-shell {
     width: 100%;
-    max-width: none;
+    max-width: 100%;
     margin: 0 auto;
-    background: var(--page);
+    background: var(--page); /* [cite: 145] */
     min-height: 100vh;
+    overflow-x: hidden;      /* Double security layer against breakout items */
 }

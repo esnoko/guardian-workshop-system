@@ -1,6 +1,6 @@
 .registration-summary-card {
     border: 1px solid var(--line);
-    background: #ececec;
+    background: #ffffff;
     padding: 0.75rem;
 }
 
@@ -70,8 +70,8 @@
 }
 
 .ticket-option {
-    border: 1px solid #8a8a8a;
-    background: #efefef;
+    border: 2px solid #8a8a8a;
+    background: #ffffff;
     padding: 0.45rem 0.25rem;
     font-size: 0.95rem;
     color: #232323;

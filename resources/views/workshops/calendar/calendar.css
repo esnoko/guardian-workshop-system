@@ -1,45 +1,42 @@
 .section-shell {
-    padding: 1rem 2.2rem 0;
+    padding: 2.5rem 4.3rem 0;
+    background: #ffffff; /* [cite: 262, 271] */
+    width: 100%;
 }
 
+/* --- MONTH ROW SYSTEM --- */
 .month-row {
-    margin-top: 1.5rem;
+    margin-top: 2.5rem;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 1rem;
 }
 
 .month-pill {
-    min-width: 126px;
     background: var(--lime);
     border-radius: 999px;
-    color: #f4f7ec;
-    font-weight: 700;
-    font-size: 0.74rem;
-    letter-spacing: 0.04em;
+    color: #ffffff;
+    font-family: "Montserrat", sans-serif; /* [cite: 237] */
+    font-weight: 800;
+    font-size: 14px;
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 0.35rem;
-    padding: 0.29rem 0.62rem;
+    gap: 0.6rem;
+    padding: 0.45rem 1.4rem 0.45rem 0.6rem;
     line-height: 1;
 }
 
-.month-icon,
-.session-cal {
-    display: inline-grid;
-    place-items: center;
-    color: #d9e79a;
-}
-
-.month-icon svg,
-.session-cal svg {
-    display: block;
+.month-icon {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .month-line {
     flex: 1;
-    height: 2px;
+    height: 3px;
     border-radius: 999px;
     background: var(--line);
 }
@@ -52,22 +49,43 @@
     clip: rect(0, 0, 0, 0);
 }
 
+/* --- CARD DISPLAY SYSTEM --- */
 .sessions-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1.6rem 1.8rem;
-    margin-top: 1.15rem;
+    gap: 2rem 2.2rem;
+    margin-top: 1.8rem;
+    width: 100%;
 }
 
 .session-card {
-    min-height: 126px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #ffffff; /* [cite: 262, 271] */
+    min-height: 120px;
 }
 
 .session-head {
     display: flex;
     align-items: flex-start;
-    gap: 0.5rem;
-    margin-bottom: 0.7rem;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+.session-cal {
+    width: 40.5px;  /* Exact dimensions parsed from specification table [cite: 250, 273] */
+    height: 44.3px; /* [cite: 251, 274] */
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.calendar-icon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .session-meta {
@@ -75,54 +93,72 @@
 }
 
 .session-date {
-    font-weight: 700;
-    font-size: 0.83rem;
+    font-family: "Open Sans", sans-serif; /* [cite: 259] */
+    font-weight: 700;                     /* [cite: 259] */
+    font-size: 15.7px;                    /* [cite: 260] */
+    color: #000000;                       /* [cite: 261] */
     margin: 0;
-    line-height: 1.25;
+    line-height: 1.2;
 }
 
 .session-time {
-    color: #272727;
-    margin: 0.2rem 0 0;
-    font-size: 0.78rem;
+    font-family: "Open Sans", sans-serif; /* [cite: 268] */
+    color: #000000;                       /* [cite: 270] */
+    margin: 0.25rem 0 0;
+    font-weight: 400;
+    font-size: 15.7px;                    /* [cite: 269] */
     line-height: 1.3;
 }
 
-.book-btn {
-    border: 2px solid var(--line);
-    color: var(--button-text);
-    background: transparent;
-    border-radius: 999px;
+/* --- BOOK NOW ACTION ELEMENTS --- */
+.book-btn-link {
+    text-decoration: none;
+    display: block;
     width: 100%;
-    padding: 0.33rem 0.9rem;
-    font-weight: 600;
-    font-size: 0.85rem;
-    cursor: pointer;
 }
 
-.session-cal {
-    width: 20px;
-    height: 20px;
-    margin-top: 0.05rem;
-    color: #d3e38a;
-    flex: 0 0 auto;
+.book-btn {
+    border: 2px solid var(--lime);
+    color: var(--button-text);
+    background: #ffffff;
+    border-radius: 999px;
+    width: 100%;
+    max-width: 270.7px; /* Fixed specification cap limit metric [cite: 245] */
+    height: 55.3px;     /* Set explicit height matching design specs [cite: 246] */
+    font-family: "Montserrat", sans-serif; /* [cite: 237] */
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.book-btn:hover {
+    background: var(--lime);
+    color: #ffffff;
+}
+
+/* --- BREAKPOINT CONTROLS --- */
+@media (max-width: 1200px) {
+    .sessions-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
 }
 
 @media (max-width: 860px) {
     .section-shell {
-        padding: 0.9rem 1rem 0;
+        padding: 1.5rem 1rem 0;
     }
-
     .sessions-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 1rem 0.9rem;
+        gap: 1.2rem 1rem;
     }
+}
 
-    .session-date {
-        font-size: 0.8rem;
-    }
-
-    .session-time {
-        font-size: 0.75rem;
+@media (max-width: 480px) {
+    .sessions-grid {
+        grid-template-columns: 1fr;
     }
 }
