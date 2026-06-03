@@ -1,0 +1,39 @@
+.registration-page {
+    padding-bottom: 0;
+}
+
+.registration-wrap {
+    padding: 0 1.9rem 0;
+}
+
+.back-link {
+    display: inline-block;
+    margin: 0.25rem 0 0.8rem;
+    color: #121212;
+    font-size: 0.95rem;
+    text-decoration: none;
+}
+
+.registration-title {
+    margin: 0 0 0.7rem;
+    font-family: "Sora", "Manrope", sans-serif;
+    font-size: clamp(1.9rem, 4.3vw, 2.85rem);
+    line-height: 1.05;
+    letter-spacing: -0.012em;
+}
+
+.registration-grid {
+    display: grid;
+    grid-template-columns: 1fr 0.95fr;
+    gap: 1.45rem;
+}
+
+@media (max-width: 1080px) {
+    .registration-wrap {
+        padding: 0 1rem 0;
+    }
+
+    .registration-grid {
+        grid-template-columns: 1fr;
+    }
+}

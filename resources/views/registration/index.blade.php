@@ -17,9 +17,10 @@
             $baseCssPath = resource_path('views/global/base.css');
             $navbarCssPath = resource_path('views/components/navbar/navbar.css');
             $endorsementCssPath = resource_path('views/components/endorsement/endorsement.css');
-            $layoutCssPath = resource_path('views/registration/layout/layout.css');
+            $headerCssPath = resource_path('views/registration/header/header.css');
             $formCssPath = resource_path('views/registration/form/form.css');
             $summaryCssPath = resource_path('views/registration/summary/summary.css');
+            $continueCssPath = resource_path('views/registration/continue/continue.css');
         @endphp
 
         @if (file_exists($baseCssPath))
@@ -30,8 +31,8 @@
             <style>{!! file_get_contents($navbarCssPath) !!}</style>
         @endif
 
-        @if (file_exists($layoutCssPath))
-            <style>{!! file_get_contents($layoutCssPath) !!}</style>
+        @if (file_exists($headerCssPath))
+            <style>{!! file_get_contents($headerCssPath) !!}</style>
         @endif
 
         @if (file_exists($formCssPath))
@@ -40,6 +41,10 @@
 
         @if (file_exists($summaryCssPath))
             <style>{!! file_get_contents($summaryCssPath) !!}</style>
+        @endif
+
+        @if (file_exists($continueCssPath))
+            <style>{!! file_get_contents($continueCssPath) !!}</style>
         @endif
 
         @if (file_exists($endorsementCssPath))
@@ -58,9 +63,7 @@
                     @include('registration.summary.index')
                 </section>
 
-                <div class="continue-wrap">
-                    <button type="button" class="continue-btn">Continue</button>
-                </div>
+                @include('registration.continue.index')
             </div>
 
             @include('components.endorsement.index')
