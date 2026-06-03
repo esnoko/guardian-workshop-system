@@ -1,0 +1,97 @@
+.summary-date,
+.ticket-number-row,
+.price-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: 0.95rem;
+}
+
+.summary-date strong,
+.ticket-number-row strong,
+.price-line strong {
+    text-align: right;
+    font-size: 0.97rem;
+}
+
+.summary-divider {
+    margin: 0.58rem 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.ticket-block p {
+    margin: 0 0 0.45rem;
+    font-weight: 700;
+}
+
+.ticket-block small {
+    font-weight: 500;
+}
+
+.ticket-options {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+}
+
+.ticket-option {
+    border: 1px solid #8a8a8a;
+    background: #efefef;
+    padding: 0.45rem 0.25rem;
+    font-size: 0.95rem;
+    color: #232323;
+    cursor: pointer;
+}
+
+.ticket-option.active {
+    border-color: var(--line);
+    color: #a3be21;
+    background: #f6f8ed;
+}
+
+.ticket-number-row {
+    margin-bottom: 0.5rem;
+}
+
+.seat-box {
+    border: 1px solid var(--line);
+    padding: 0.55rem;
+    margin-bottom: 0.65rem;
+}
+
+.seat-box p {
+    margin: 0 0 0.4rem;
+}
+
+.seat-line {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.2rem;
+}
+
+.seat-line span {
+    font-weight: 800;
+    color: #001d59;
+}
+
+.price-line {
+    margin-top: 0.25rem;
+    font-weight: 700;
+}
+
+.price-line.grand strong {
+    color: var(--lime-dark);
+}
+
+@media (max-width: 720px) {
+    .ticket-options {
+        grid-template-columns: 1fr;
+    }
+
+    .summary-date,
+    .ticket-number-row,
+    .price-line {
+        font-size: 0.9rem;
+    }
+}
