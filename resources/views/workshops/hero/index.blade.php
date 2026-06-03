@@ -24,10 +24,10 @@
         @endif
     </div>
 
-    <aside class="hero-visual" aria-label="Workshop overview image">
-        <div class="hero-arc" aria-hidden="true"></div>
-        <div class="plant left" aria-hidden="true"></div>
-        <div class="hero-chair" aria-hidden="true"></div>
-        <div class="plant right" aria-hidden="true"></div>
-    </aside>
+<aside class="hero-visual" aria-label="Workshop overview image">
+    <img
+        src="{{ asset('images/ChatGPT Image May 22, 2026, 09_41_21 AM (1).png') }}"
+        alt="Workshop Overview"
+        class="hero-image">
+</aside>
 </section>

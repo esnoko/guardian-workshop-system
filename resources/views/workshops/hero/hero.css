@@ -104,68 +104,18 @@
     overflow: hidden;
 }
 
-.hero-arc {
-    position: absolute;
-    left: -31%;
-    top: -4%;
-    width: 146%;
-    height: 108%;
-    border-radius: 56% 56% 0 0;
-    background: radial-gradient(circle at 62% 40%, rgba(221, 230, 191, 0.95) 0%, rgba(231, 237, 207, 0.78) 45%, rgba(239, 243, 224, 0.42) 65%, rgba(240, 240, 238, 0) 72%);
+.hero-visual {
+    min-height: 470px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.45rem 0 0 0;
 }
 
-.hero-chair {
-    position: absolute;
-    right: 18%;
-    bottom: 11%;
-    width: 40%;
-    height: 53%;
-    border-radius: 41% 41% 24% 24%;
-    background: linear-gradient(180deg, #f3eee7 0%, #f2eee7 54%, #f0ece6 100%);
-    box-shadow: 0 18px 30px rgba(0, 0, 0, 0.16);
-}
-
-.hero-chair::before {
-    content: "";
-    position: absolute;
-    left: 19%;
-    top: 27%;
-    width: 62%;
-    height: 34%;
-    border-radius: 0.45rem;
-    background: linear-gradient(180deg, #88aa4e 0%, #6f8f3e 100%);
-    box-shadow: inset 0 -8px 14px rgba(0, 0, 0, 0.18);
-}
-
-.hero-chair::after {
-    content: "";
-    position: absolute;
-    left: -29%;
-    bottom: -13%;
-    width: 165%;
-    height: 16%;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.08);
-}
-
-.plant {
-    position: absolute;
-    bottom: 10%;
-    width: 14%;
-    height: 34%;
-    border-radius: 50% 50% 10% 10%;
-    background: linear-gradient(180deg, #86ab53 0%, #5f7f35 100%);
-    box-shadow: inset 0 -10px 14px rgba(0, 0, 0, 0.14);
-}
-
-.plant.left {
-    left: 12%;
-}
-
-.plant.right {
-    right: 5%;
-    height: 52%;
-    width: 19%;
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 @media (max-width: 1180px) {
