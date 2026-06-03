@@ -14,11 +14,22 @@
 .panel-icon {
     width: 1.6rem;
     height: 1.6rem;
+    min-width: 1.6rem;
     border-radius: 999px;
     background: var(--lime);
-    display: inline-grid;
+    display: grid;
     place-items: center;
-    font-size: 0.95rem;
+    flex-shrink: 0;
+    stroke: #2a2a2a;
+    stroke-width: 1.5px;
+}
+
+.panel-icon-img {
+    width: 1.8rem;
+    height: 1.8rem;
+    min-width: 1.8rem;
+    object-fit: contain;
+    flex-shrink: 0;
 }
 
 .panel-head h2 {
@@ -40,6 +51,19 @@
     align-items: flex-start;
     gap: 0.6rem;
     font-size: 0.95rem;
+}
+
+.summary-date-icon-label {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.summary-date-icon {
+    width: 1.2rem;
+    height: 1.2rem;
+    object-fit: contain;
+    flex-shrink: 0;
 }
 
 .summary-date strong,
@@ -72,16 +96,40 @@
 .ticket-option {
     border: 1px solid #8a8a8a;
     background: #efefef;
-    padding: 0.45rem 0.25rem;
+    padding: 0.45rem 0.35rem;
     font-size: 0.95rem;
     color: #232323;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    transition: all 0.2s ease;
+}
+
+.ticket-option:hover {
+    border-color: var(--lime);
 }
 
 .ticket-option.active {
     border-color: var(--line);
     color: #a3be21;
     background: #f6f8ed;
+}
+
+.ticket-count {
+    font-weight: 700;
+}
+
+.ticket-avatars {
+    display: flex;
+    gap: 0.15rem;
+}
+
+.ticket-avatar {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
 }
 
 .ticket-number-row {

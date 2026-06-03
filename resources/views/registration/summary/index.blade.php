@@ -1,6 +1,6 @@
 <aside class="registration-summary-card">
     <header class="panel-head summary-head">
-        <span class="panel-icon" aria-hidden="true">&#128221;</span>
+        <img src="{{ asset('images/Reg_summary.png') }}" alt="Registration summary" class="panel-icon-img">
         <div>
             <h2>Registration Summary</h2>
             <p>Review your details before submitting</p>
@@ -8,7 +8,10 @@
     </header>
 
     <div class="summary-row summary-date">
-        <span>Workshop Date</span>
+        <div class="summary-date-icon-label">
+            <img src="{{ asset('images/calender.png') }}" alt="Calendar" class="summary-date-icon">
+            <span>Workshop Date</span>
+        </div>
         <strong>
             {{ $session->session_date->format('D, d M Y') }}<br>
             {{ \Illuminate\Support\Carbon::parse($session->start_time)->format('H:i A') }} - {{ \Illuminate\Support\Carbon::parse($session->end_time)->format('H:i A') }}
@@ -22,13 +25,15 @@
         <div class="ticket-options" role="group" aria-label="Number of tickets">
             @foreach($ticketOptions as $count)
                 <button type="button" class="ticket-option {{ $count === $selectedTickets ? 'active' : '' }}">
-                    @if($count === 3)
-                        {{ $count }} &#128100; &#128100; &#128100;
-                    @elseif($count === 2)
-                        {{ $count }} &#128100; &#128100;
-                    @else
-                        {{ $count }} &#128100;
-                    @endif
+                    <span class="ticket-count">{{ $count }}</span>
+                    <span class="ticket-avatars">
+                        @for($i = 1; $i <= $count; $i++)
+                            <svg viewBox="0 0 24 24" fill="currentColor" class="ticket-avatar" aria-hidden="true">
+                                <circle cx="12" cy="8" r="4"></circle>
+                                <path d="M12 14c-4 0-6 2-6 4v4h12v-4c0-2-2-4-6-4z"></path>
+                            </svg>
+                        @endfor
+                    </span>
                 </button>
             @endforeach
         </div>
