@@ -29,7 +29,19 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('workshop_sessions', function (Blueprint $table) {
-            $table->dropColumn(['status', 'registrations_count', 'max_capacity']);
+            $columnsToDrop = [];
+
+            if (Schema::hasColumn('workshop_sessions', 'registrations_count')) {
+                $columnsToDrop[] = 'registrations_count';
+            }
+
+            if (Schema::hasColumn('workshop_sessions', 'max_capacity')) {
+                $columnsToDrop[] = 'max_capacity';
+            }
+
+            if (!empty($columnsToDrop)) {
+                $table->dropColumn($columnsToDrop);
+            }
         });
     }
 };
