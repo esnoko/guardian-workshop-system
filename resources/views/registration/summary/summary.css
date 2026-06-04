@@ -1,6 +1,6 @@
 .registration-summary-card {
     border: 1px solid var(--line);
-    background: #f7f7f7;
+    background: transparent;
     padding: 1.25rem;
     min-height: 620px;
 }
