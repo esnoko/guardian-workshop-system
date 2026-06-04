@@ -6,6 +6,9 @@
                 The SACE-endorsed short course, Guardian of Privacy: Digital Ethics and Mandatory Reporting within the Tekete Safe Space App, equips educators and school stakeholders with practical knowledge on digital ethics, learner confidentiality, safeguarding responsibilities, and mandatory reporting within educational environments.
             </p>
         </div>
+
+        <div class="endorsement-divider"></div>
+
         <div class="note-block">
             <img src="{{ asset('images/people_icon.png') }}" alt="Participants" class="note-icon-img">
             <p class="endorsement-note">
