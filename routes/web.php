@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Registration\WorkshopRegistrationController;
+use App\Http\Controllers\Payment\PaymentController;
 use App\Http\Controllers\Workshop\WorkshopController;
 use Illuminate\Support\Facades\Route;
 
@@ -11,3 +12,15 @@ Route::post('/workshops/{session}/register', [WorkshopRegistrationController::cl
 Route::get('/registrations/{registration}/confirmation', [WorkshopRegistrationController::class, 'confirmation'])
 	->middleware('signed')
 	->name('registration.confirmation');
+
+Route::get('/registrations/{registration}/payment', [PaymentController::class, 'start'])
+	->middleware('signed')
+	->name('payment.start');
+
+Route::post('/registrations/{registration}/payment', [PaymentController::class, 'initiate'])
+	->middleware('signed')
+	->name('payment.initiate');
+
+Route::get('/registrations/{registration}/payment/{payment}/complete', [PaymentController::class, 'complete'])
+	->middleware('signed')
+	->name('payment.complete');

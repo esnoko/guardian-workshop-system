@@ -54,14 +54,14 @@ class WorkshopRegistrationController extends Controller
             $validated = $request->validated();
             $registration = $this->registrationService->createRegistration($session, $validated);
 
-            $confirmationUrl = URL::temporarySignedRoute(
-                'registration.confirmation',
+            $paymentUrl = URL::temporarySignedRoute(
+                'payment.start',
                 now()->addDays(7),
                 ['registration' => $registration->id]
             );
 
             return redirect()
-                ->to($confirmationUrl)
+                ->to($paymentUrl)
                 ->with('success', 'Registration successful! Your reference number is: ' . $registration->reference_number);
         } catch (HttpException $e) {
             if ($e->getStatusCode() === 422) {

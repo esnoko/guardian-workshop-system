@@ -91,6 +91,59 @@
                 const ticketCountInput = document.getElementById('ticketCountInput');
                 const subtotalElement = document.querySelector('.price-line:nth-child(6) strong');
                 const grandTotalElement = document.querySelector('.price-line.grand strong');
+                const ticketNumberDisplay = document.getElementById('ticketNumberDisplay');
+                const seatPreviewList = document.getElementById('seatPreviewList');
+
+                function renderSeatPreview(ticketCount) {
+                    if (!seatPreviewList) {
+                        return;
+                    }
+
+                    seatPreviewList.innerHTML = '';
+
+                    for (let i = 1; i <= ticketCount; i += 1) {
+                        const row = document.createElement('div');
+                        row.className = 'seat-line';
+
+                        const label = document.createElement('span');
+                        label.textContent = `Seat ${i}`;
+
+                        const value = document.createElement('strong');
+                        value.textContent = 'Assigned after registration';
+
+                        row.appendChild(label);
+                        row.appendChild(value);
+                        seatPreviewList.appendChild(row);
+                    }
+                }
+
+                function applyTicketSelection(button) {
+                    const ticketCount = parseInt(button.dataset.ticketCount, 10);
+
+                    // Update hidden input for form submission
+                    if (ticketCountInput) {
+                        ticketCountInput.value = String(ticketCount);
+                    }
+
+                    // Update ticket number preview
+                    if (ticketNumberDisplay && button.dataset.ticketNumber) {
+                        ticketNumberDisplay.textContent = button.dataset.ticketNumber;
+                    }
+
+                    // Update seat lines preview
+                    if (!Number.isNaN(ticketCount)) {
+                        renderSeatPreview(ticketCount);
+                    }
+
+                    // Update totals
+                    const subtotal = parseFloat(button.dataset.subtotal);
+                    const grandTotal = parseFloat(button.dataset.grandTotal);
+
+                    if (subtotalElement && grandTotalElement) {
+                        subtotalElement.textContent = 'R' + subtotal.toFixed(2);
+                        grandTotalElement.textContent = 'R' + grandTotal.toFixed(2);
+                    }
+                }
 
                 ticketOptions.forEach(button => {
                     button.addEventListener('click', function(e) {
@@ -101,20 +154,16 @@
                         
                         // Add active class to clicked button
                         this.classList.add('active');
-                        
-                        // Update hidden input
-                        ticketCountInput.value = this.dataset.ticketCount;
-                        
-                        // Update display values
-                        const subtotal = parseFloat(this.dataset.subtotal);
-                        const grandTotal = parseFloat(this.dataset.grandTotal);
-                        
-                        if (subtotalElement && grandTotalElement) {
-                            subtotalElement.textContent = 'R' + subtotal.toFixed(2);
-                            grandTotalElement.textContent = 'R' + grandTotal.toFixed(2);
-                        }
+
+                        applyTicketSelection(this);
                     });
                 });
+
+                // Ensure preview aligns with current selected state on initial page render.
+                const activeButton = document.querySelector('.ticket-option.active');
+                if (activeButton) {
+                    applyTicketSelection(activeButton);
+                }
             });
         </script>
     </body>

@@ -12,7 +12,7 @@ class WorkshopRegistrationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_user_can_register_and_get_signed_confirmation_redirect(): void
+    public function test_user_can_register_and_get_signed_payment_redirect(): void
     {
         $session = WorkshopSession::factory()->create([
             'status' => 'upcoming',
@@ -41,6 +41,7 @@ class WorkshopRegistrationTest extends TestCase
         $redirectTarget = $response->headers->get('Location');
         $this->assertNotNull($redirectTarget);
         $this->assertStringContainsString('signature=', (string) $redirectTarget);
+        $this->assertStringContainsString('/payment', (string) $redirectTarget);
     }
 
     public function test_duplicate_email_for_same_session_is_rejected(): void

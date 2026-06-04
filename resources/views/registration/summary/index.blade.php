@@ -1,4 +1,8 @@
 <aside class="registration-summary-card">
+    @php
+        $currentSelectedTickets = (int) old('ticket_count', $selectedTickets);
+    @endphp
+
     <header class="panel-head summary-head">
         <img src="{{ asset('images/Reg_summary.png') }}" alt="Registration summary" class="panel-icon-img">
         <div>
@@ -14,7 +18,7 @@
         </div>
         <strong>
             {{ $session->session_date->format('D, d M Y') }}<br>
-            {{ \Illuminate\Support\Carbon::parse($session->start_time)->format('H:i A') }} - {{ \Illuminate\Support\Carbon::parse($session->end_time)->format('H:i A') }}
+            {{ \Illuminate\Support\Carbon::parse($session->start_time)->format('h:i A') }} - {{ \Illuminate\Support\Carbon::parse($session->end_time)->format('h:i A') }}
         </strong>
     </div>
 
@@ -24,7 +28,15 @@
         <p>Number of tickets <small>(Max 3 per email)</small></p>
         <div class="ticket-options" role="group" aria-label="Number of tickets">
             @foreach($ticketOptions as $count)
-                <button type="button" class="ticket-option {{ $count === $selectedTickets ? 'active' : '' }}" data-ticket-count="{{ $count }}" data-ticket-price="{{ $ticketPrice }}" data-subtotal="{{ $ticketPrice * $count }}" data-grand-total="{{ $ticketPrice * $count * 1.15 }}">
+                <button
+                    type="button"
+                    class="ticket-option {{ $count === $currentSelectedTickets ? 'active' : '' }}"
+                    data-ticket-count="{{ $count }}"
+                    data-ticket-price="{{ $ticketPrice }}"
+                    data-subtotal="{{ $ticketPrice * $count }}"
+                    data-grand-total="{{ $ticketPrice * $count * 1.15 }}"
+                    data-ticket-number="{{ $ticketNumber }}_{{ $count }}"
+                >
                     <span class="ticket-count">{{ $count }}</span>
                     <span class="ticket-avatars">
                         @for($i = 1; $i <= $count; $i++)
@@ -43,17 +55,19 @@
 
     <div class="ticket-number-row">
         <span>Ticket Number</span>
-        <strong>{{ $ticketNumber }}</strong>
+        <strong id="ticketNumberDisplay">{{ $ticketNumber }}_{{ $currentSelectedTickets }}</strong>
     </div>
 
     <div class="seat-box">
         <p><strong>Seat Numbers</strong> (To be assigned after registration)</p>
-        @foreach($seatNumbers as $seatLabel => $seatValue)
-            <div class="seat-line">
-                <span>{{ $seatLabel }}</span>
-                <strong>{{ $seatValue }}</strong>
-            </div>
-        @endforeach
+        <div id="seatPreviewList">
+            @for($i = 1; $i <= $currentSelectedTickets; $i++)
+                <div class="seat-line">
+                    <span>Seat {{ $i }}</span>
+                    <strong>Assigned after registration</strong>
+                </div>
+            @endfor
+        </div>
     </div>
 
     <div class="price-line">
