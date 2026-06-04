@@ -50,17 +50,15 @@
     gap: 0.45rem;
 }
 
-.registration-form label {
-    display: grid;
-    gap: 0.15rem;
-    font-size: 0.94rem;
-    font-weight: 700;
+.field-label {
+    display: inline-block;
+    margin-bottom: 0.35rem;
 }
 
 .required {
-    color: #e53935;
-    font-weight: 700;
+    color: #d43d2d;
     margin-left: 2px;
+    font-weight: 700;
 }
 
 .registration-form input,
