@@ -55,11 +55,14 @@
             </div>
         @endforeach
     </div>
+<div class="price-line">
+    <span class="price-label">
+        <img src="{{ asset('images/Price_tag.png') }}" alt="Price Tag" class="price-icon">
+        Price per ticket (exl vat)
+    </span>
+    <strong>R{{ number_format($ticketPrice, 2) }}</strong>
+</div>
 
-    <div class="price-line">
-        <span>Price per ticket (exl vat)</span>
-        <strong>R{{ number_format($ticketPrice, 2) }}</strong>
-    </div>
     <div class="price-line">
         <span>Total Amount (exl vat)</span>
         <strong>R{{ number_format($subtotal, 2) }}</strong>

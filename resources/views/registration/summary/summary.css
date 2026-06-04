@@ -181,8 +181,23 @@
 
 .price-line {
     margin-top: .9rem;
-    font-weight: 700;
-    font-size: 1.05rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.price-label {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.price-icon {
+    width: 1.4rem;
+    height: 1.4rem;
+    object-fit: contain;
+    flex-shrink: 0;
 }
 
 .price-line.grand strong {
