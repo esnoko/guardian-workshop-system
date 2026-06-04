@@ -20,7 +20,9 @@
 
     <div class="registration-form">
         <label>
+             <span class="field-label">
             Full Name<span class="required">*</span>
+             </span>
             <input type="text" name="full_name" placeholder="Enter full name and surname" value="{{ old('full_name') }}" required>
             @error('full_name')<span class="field-error">{{ $message }}</span>@enderror
         </label>

@@ -1,14 +1,15 @@
 .registration-summary-card {
     border: 1px solid var(--line);
-    background: #ececec;
-    padding: 0.75rem;
+    background: transparent;
+    padding: 1.25rem;
+    min-height: 620px;
 }
 
 .panel-head {
     display: flex;
     align-items: center;
-    gap: 0.55rem;
-    margin-bottom: 0.7rem;
+    gap: 0.9rem;
+    margin-bottom: 1.5rem;
 }
 
 .panel-icon {
@@ -34,8 +35,9 @@
 
 .panel-head h2 {
     margin: 0;
-    font-size: 1.08rem;
-    font-weight: 800;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.1;
 }
 
 .panel-head p {
@@ -48,10 +50,15 @@
 .price-line {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    gap: 0.6rem;
-    font-size: 0.95rem;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.05rem;
 }
+
+.summary-date {
+    padding-bottom: 1rem;
+}
+
 
 .summary-date-icon-label {
     display: flex;
@@ -70,11 +77,13 @@
 .ticket-number-row strong,
 .price-line strong {
     text-align: right;
-    font-size: 0.97rem;
+    font-size: 1rem;
+    font-weight: 400;
+    color: #222;
 }
 
 .summary-divider {
-    margin: 0.58rem 0;
+    margin: 1.2rem 0;
     border-bottom: 1px solid var(--line);
 }
 
@@ -95,7 +104,7 @@
 
 .ticket-option {
     border: 1px solid #8a8a8a;
-    background: #efefef;
+    background: transparent;
     padding: 0.45rem 0.35rem;
     font-size: 0.95rem;
     color: #232323;
@@ -112,13 +121,13 @@
 }
 
 .ticket-option.active {
-    border-color: var(--line);
-    color: #a3be21;
-    background: #f6f8ed;
+    border: 3px solid var(--lime);
+    background: #fff;
+    color: var(--lime);
 }
 
 .ticket-count {
-    font-weight: 700;
+    font-weight: 400;
 }
 
 .ticket-avatars {
@@ -136,14 +145,25 @@
     margin-bottom: 0.5rem;
 }
 
+.ticket-number-row {
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+}
+
+.ticket-number-row strong {
+    font-weight: 500;
+}
+
 .seat-box {
     border: 1px solid var(--line);
-    padding: 0.55rem;
-    margin-bottom: 0.65rem;
+    padding: 1rem;
+    margin-bottom: 1.25rem;
+    background: #fff;
 }
 
 .seat-box p {
-    margin: 0 0 0.4rem;
+    margin: 0 0 .75rem;
+    font-size: 1rem;
 }
 
 .seat-line {
@@ -152,19 +172,55 @@
     margin-top: 0.2rem;
 }
 
+
+
 .seat-line span {
-    font-weight: 800;
-    color: #001d59;
+    font-weight: 700;
+    color: #111;
 }
 
 .price-line {
-    margin-top: 0.25rem;
+    margin-top: .9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.price-line strong {
     font-weight: 700;
+    color: #222;
+}
+
+.price-label {
+    font-weight: 400;
+}
+
+.price-title {
+    font-weight: 700;
+}
+
+.price-line strong {
+    font-weight: 700;
+}
+
+.price-label {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.price-icon {
+    width: 1.4rem;
+    height: 1.4rem;
+    object-fit: contain;
+    flex-shrink: 0;
 }
 
 .price-line.grand strong {
     color: var(--lime-dark);
 }
+
 
 @media (max-width: 720px) {
     .ticket-options {
