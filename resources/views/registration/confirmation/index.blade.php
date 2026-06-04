@@ -140,6 +140,7 @@
                 <div class="confirmation-actions">
                     <a href="{{ route('workshops.index') }}" class="confirmation-link">Back to Workshops</a>
                     <a href="{{ route('workshops.register', ['session' => $session->id]) }}" class="confirmation-link">Register Another Participant</a>
+                    <a href="{{ \Illuminate\Support\Facades\URL::temporarySignedRoute('payment.start', now()->addDays(7), ['registration' => $registration->id]) }}" class="confirmation-link">Proceed to Payment</a>
                 </div>
             </div>
         </main>
