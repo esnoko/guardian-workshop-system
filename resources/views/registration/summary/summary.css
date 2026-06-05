@@ -2,7 +2,7 @@
     border: 1px solid var(--line);
     background: transparent;
     padding: 1.25rem;
-    min-height: 620px;
+    min-height: 450px;
 }
 
 .panel-head {

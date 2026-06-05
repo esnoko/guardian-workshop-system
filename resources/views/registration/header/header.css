@@ -8,7 +8,7 @@
 
 .back-link {
     display: block;
-    margin-top: 0.5rem;
+    margin-top: 4rem;
     margin-bottom: 2rem;
     margin-left: 4rem;
     color: #121212;
@@ -17,9 +17,9 @@
 }
 
 .registration-title {
-    margin: 0 0 2rem;
+    margin: 2rem;
     font-family: "Sora", "Manrope", sans-serif;
-    font-size: clamp(2.2rem, 4.3vw, 3.2rem);
+    font-size: clamp(1.9rem, 4.3vw, 2.85rem);
     line-height: 1.05;
     letter-spacing: -0.012em;
 }
