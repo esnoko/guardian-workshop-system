@@ -40,10 +40,15 @@
                     <span class="ticket-count">{{ $count }}</span>
                     <span class="ticket-avatars">
                         @for($i = 1; $i <= $count; $i++)
-                            <svg viewBox="0 0 24 24" fill="currentColor" class="ticket-avatar" aria-hidden="true">
-                                <circle cx="12" cy="8" r="4"></circle>
-                                <path d="M12 14c-4 0-6 2-6 4v4h12v-4c0-2-2-4-6-4z"></path>
-                            </svg>
+                            <svg viewBox="0 0 24 24" class="ticket-avatar" aria-hidden="true">
+    <circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="2"></circle>
+    <path d="M12 14c-4 0-6 2-6 4v4h12v-4c0-2-2-4-6-4z"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linejoin="round">
+    </path>
+</svg>
                         @endfor
                     </span>
                 </button>
@@ -72,8 +77,16 @@
 
     <div class="price-line">
     <span class="price-label">
-        <img src="{{ asset('images/Price_tag.png') }}" alt="Price Tag" class="price-icon">
-        Price per ticket (exl vat)
+       <span class="price-label">
+    <svg class="price-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 12V5h7l11 11-7 7L3 12z"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"/>
+        <circle cx="8" cy="8" r="1.5" fill="currentColor"/>
+    </svg>
+    Price per ticket (exl vat)
+</span>
     </span>
     <strong>R{{ number_format($ticketPrice, 2) }}</strong>
 </div>
