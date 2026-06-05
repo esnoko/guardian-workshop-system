@@ -4,6 +4,7 @@
     gap: 0.8rem;
     align-items: center;
     padding: 0 0 0 4.3rem;
+    margin-top: -2rem;
 }
 
 .hero-copy {
@@ -98,14 +99,6 @@
 
 .hero-visual {
     min-height: 470px;
-    border-radius: 0.45rem 0 0 0;
-    background: linear-gradient(180deg, #f0f0ee 0%, #edf2df 71%, #fafaf8 71%, #fafaf8 100%);
-    position: relative;
-    overflow: hidden;
-}
-
-.hero-visual {
-    min-height: 470px;
     position: relative;
     overflow: hidden;
     border-radius: 0.45rem 0 0 0;
@@ -115,7 +108,24 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: -5px center;
     display: block;
+}
+
+.hero-visual::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+
+    background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,1) 0%,
+        rgba(255,255,255,0.7) 5%,
+        rgba(255,255,255,0.25) 15%,
+        rgba(255,255,255,0) 20%
+    );
 }
 
 @media (max-width: 1180px) {
