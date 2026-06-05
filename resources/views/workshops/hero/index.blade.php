@@ -19,7 +19,10 @@
             <div class="course-block">
                 <p class="course-label">Course:</p>
                 <p class="course-title">Guardian of Privacy:</p>
-                <p class="hero-summary">Digital Ethics and Mandatory Reporting within the Tekete Safe Space.</p>
+                <p class="hero-summary">
+                    Digital Ethics and Mandatory<br>
+                    Reporting within the Tekete SafeSpace.
+                </p>
             </div>
         @endif
     </div>
