@@ -1,0 +1,148 @@
+.payment-summary {
+    border: 1px solid #d8d800;
+    background: #fff;
+    padding: 0.95rem 1rem 1rem;
+}
+
+.payment-summary-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.payment-summary-badge {
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 999px;
+    background: #cedd22;
+    flex: 0 0 auto;
+    position: relative;
+}
+
+.payment-summary-badge::before {
+    content: "";
+    position: absolute;
+    left: 0.55rem;
+    top: 0.45rem;
+    width: 1rem;
+    height: 0.95rem;
+    border: 2px solid #fff;
+    border-radius: 0.2rem;
+}
+
+.payment-summary h3 {
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.payment-summary p {
+    margin: 0.2rem 0 0;
+    font-size: 0.92rem;
+}
+
+.summary-row {
+    margin-top: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: flex-start;
+    font-size: 1rem;
+}
+
+.summary-row--stacked,
+.summary-row--tickets {
+    border-top: 1px solid #ebeb96;
+    padding-top: 0.9rem;
+}
+
+.summary-row small {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 400;
+}
+
+.summary-value,
+.summary-ticket-number {
+    text-align: right;
+    font-weight: 600;
+}
+
+.summary-value--stacked {
+    display: grid;
+    gap: 0.15rem;
+}
+
+.summary-seats {
+    margin-top: 1rem;
+    border: 1px solid #222;
+    padding: 0.75rem 0.85rem 0.7rem;
+}
+
+.summary-seats-head {
+    display: grid;
+    gap: 0.1rem;
+    margin-bottom: 0.3rem;
+}
+
+.summary-seats-head strong {
+    font-size: 1rem;
+}
+
+.summary-seats-head span {
+    font-size: 0.9rem;
+}
+
+.summary-seat-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.35rem;
+    font-size: 0.98rem;
+}
+
+.summary-seat-line strong {
+    font-size: 0.98rem;
+}
+
+.summary-ticket-list {
+    display: flex;
+    gap: 0.55rem;
+    justify-content: flex-end;
+}
+
+.summary-ticket-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 4.3rem;
+    padding: 0.45rem 0.55rem;
+    border: 1px solid #222;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.summary-ticket-pill.is-active {
+    background: #cedd22;
+    border-color: #cedd22;
+}
+
+.summary-pricing {
+    margin-top: 1rem;
+    display: grid;
+    gap: 0.6rem;
+}
+
+.summary-pricing-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 1rem;
+}
+
+.summary-pricing-row strong {
+    font-size: 1.05rem;
+}
+
+.summary-pricing-row.total strong {
+    color: #cedd22;
+}
