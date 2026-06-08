@@ -40,7 +40,6 @@
     <div class="summary-seats">
         <div class="summary-seats-head">
             <strong>Seat Numbers</strong>
-            <span>(To be assigned after registration)</span>
         </div>
         @if ($seatNumbers->isNotEmpty())
             @foreach($seatNumbers as $index => $seat)
