@@ -89,10 +89,32 @@
             document.addEventListener('DOMContentLoaded', function() {
                 const ticketOptions = document.querySelectorAll('.ticket-option');
                 const ticketCountInput = document.getElementById('ticketCountInput');
-                const subtotalElement = document.querySelector('.price-line:nth-child(6) strong');
-                const grandTotalElement = document.querySelector('.price-line.grand strong');
-                const ticketNumberDisplay = document.getElementById('ticketNumberDisplay');
+                const subtotalElement = document.getElementById('subtotalDisplay');
+                const grandTotalElement = document.getElementById('grandTotalDisplay');
                 const seatPreviewList = document.getElementById('seatPreviewList');
+                const additionalAttendeeCards = document.querySelectorAll('.additional-attendee-card');
+
+                function setAttendeeCardEnabled(card, enabled) {
+                    const inputs = card.querySelectorAll('input, select');
+
+                    inputs.forEach(input => {
+                        input.disabled = !enabled;
+                    });
+
+                    if (enabled) {
+                        card.classList.remove('is-hidden');
+                    } else {
+                        card.classList.add('is-hidden');
+                    }
+                }
+
+                function syncAdditionalAttendeeCards(ticketCount) {
+                    const requiredAdditional = Math.max(0, ticketCount - 1);
+
+                    additionalAttendeeCards.forEach((card, index) => {
+                        setAttendeeCardEnabled(card, index < requiredAdditional);
+                    });
+                }
 
                 function renderSeatPreview(ticketCount) {
                     if (!seatPreviewList) {
@@ -125,14 +147,10 @@
                         ticketCountInput.value = String(ticketCount);
                     }
 
-                    // Update ticket number preview
-                    if (ticketNumberDisplay && button.dataset.ticketNumber) {
-                        ticketNumberDisplay.textContent = button.dataset.ticketNumber;
-                    }
-
                     // Update seat lines preview
                     if (!Number.isNaN(ticketCount)) {
                         renderSeatPreview(ticketCount);
+                        syncAdditionalAttendeeCards(ticketCount);
                     }
 
                     // Update totals
@@ -163,6 +181,11 @@
                 const activeButton = document.querySelector('.ticket-option.active');
                 if (activeButton) {
                     applyTicketSelection(activeButton);
+                } else {
+                    const fallbackCount = parseInt(ticketCountInput?.value ?? '1', 10);
+                    if (!Number.isNaN(fallbackCount)) {
+                        syncAdditionalAttendeeCards(fallbackCount);
+                    }
                 }
             });
         </script>

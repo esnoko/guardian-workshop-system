@@ -1,0 +1,37 @@
+.payment-page {
+    background: var(--page);
+    min-height: 100vh;
+}
+
+.payment-page .topbar {
+    padding: 0 3.8rem 0;
+}
+
+.payment-page .brand-logo {
+    height: 142px;
+}
+
+.payment-wrap {
+    padding: 1rem 3.8rem 2rem;
+}
+
+.payment-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+}
+
+@media (max-width: 980px) {
+    .payment-page .topbar {
+        padding: 0 1rem 0;
+    }
+
+    .payment-wrap {
+        padding: 1rem;
+    }
+
+    .payment-grid {
+        grid-template-columns: 1fr;
+    }
+}
