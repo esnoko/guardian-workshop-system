@@ -9,8 +9,8 @@
     flex-direction: column;
     gap: 0.35rem;
     font-size: 1rem;
-    font-weight: 600;
-    color: #222;
+    font-weight: 700;
+    color: #000000;
 }
 
 .panel-head {
@@ -62,6 +62,9 @@
 .field-label {
     display: inline-block;
     margin-bottom: 0.35rem;
+    color: #000000;
+    font-weight: 700;
+    font-size: 1rem;
 }
 
 .required {
@@ -77,7 +80,7 @@
     background: #ffffff;
     padding: 0.5rem 0.75rem;
     font-size: 1rem;
-    color: #333;
+    color: #000000;
     border-radius: 0;
     box-sizing: border-box;
 }
@@ -151,8 +154,9 @@
 
 .additional-attendees h3 {
     margin: 0;
-    font-size: 1.2rem;
-    color: #1f1f1f;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #000000;
 }
 
 .additional-attendees p {
@@ -171,7 +175,9 @@
 
 .additional-attendee-card h4 {
     margin: 0;
-    font-size: 1rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #000000;
 }
 
 .additional-attendee-card.is-hidden {

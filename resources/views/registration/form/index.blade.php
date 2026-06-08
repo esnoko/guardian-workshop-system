@@ -106,26 +106,34 @@
                     <h4>Attendee {{ $index + 2 }}</h4>
 
                     <label>
+                        <span class="field-label">
                         Full Name<span class="required">*</span>
+                        </span>
                         <input type="text" name="additional_attendees[{{ $index }}][full_name]" value="{{ old("additional_attendees.{$index}.full_name") }}" placeholder="Enter full name and surname">
                         @error("additional_attendees.{$index}.full_name")<span class="field-error">{{ $message }}</span>@enderror
                     </label>
 
                     <label>
+                        <span class="field-label">
                         School Name<span class="required">*</span>
+                        </span>
                         <input type="text" name="additional_attendees[{{ $index }}][school_name]" value="{{ old("additional_attendees.{$index}.school_name") }}" placeholder="Enter school name">
                         @error("additional_attendees.{$index}.school_name")<span class="field-error">{{ $message }}</span>@enderror
                     </label>
 
                     <label>
+                        <span class="field-label">
                         Phone Number<span class="required">*</span>
+                        </span>
                         <input type="text" name="additional_attendees[{{ $index }}][phone_number]" value="{{ old("additional_attendees.{$index}.phone_number") }}" placeholder="Enter phone number">
                         @error("additional_attendees.{$index}.phone_number")<span class="field-error">{{ $message }}</span>@enderror
                     </label>
 
                     <div class="split-fields">
                         <label>
+                            <span class="field-label">
                             Province / Region<span class="required">*</span>
+                            </span>
                             <select name="additional_attendees[{{ $index }}][province_region]">
                                 <option value="">Select Province/Region</option>
                                 @foreach (['Gauteng', 'Western Cape', 'KwaZulu-Natal', 'Eastern Cape', 'Northern Cape', 'Free State', 'Limpopo', 'Mpumalanga'] as $province)
@@ -136,7 +144,9 @@
                         </label>
 
                         <label>
+                            <span class="field-label">
                             District<span class="required">*</span>
+                            </span>
                             <select name="additional_attendees[{{ $index }}][district]">
                                 <option value="">Select District</option>
                                 @foreach (['Johannesburg North', 'Johannesburg South', 'Ekurhuleni', 'Tshwane'] as $district)
@@ -148,7 +158,9 @@
                     </div>
 
                     <label>
+                        <span class="field-label">
                         Position / Role<span class="required">*</span>
+                        </span>
                         <input type="text" name="additional_attendees[{{ $index }}][position_role]" value="{{ old("additional_attendees.{$index}.position_role") }}" placeholder="Enter position / role">
                         @error("additional_attendees.{$index}.position_role")<span class="field-error">{{ $message }}</span>@enderror
                     </label>
