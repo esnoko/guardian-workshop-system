@@ -21,6 +21,9 @@ Route::post('/registrations/{registration}/payment', [PaymentController::class, 
 	->middleware('signed')
 	->name('payment.initiate');
 
+Route::post('/payments/payfast/itn', [PaymentController::class, 'itn'])
+	->name('payment.payfast.itn');
+
 Route::get('/registrations/{registration}/payment/{payment}/complete', [PaymentController::class, 'complete'])
 	->middleware('signed')
 	->name('payment.complete');
