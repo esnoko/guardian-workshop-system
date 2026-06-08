@@ -73,6 +73,8 @@
     flex-shrink: 0;
 }
 
+
+
 .summary-date strong,
 .ticket-number-row strong,
 .price-line strong {
@@ -143,10 +145,12 @@
 }
 
 .ticket-avatar {
-    width: 1rem;
-    height: 1rem;
-     color: #000;
-    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    color: #c7da30; /* Change icon color here */
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 24;
 }
 
 .ticket-number-row {
@@ -232,6 +236,9 @@
     gap: 0.45rem;
 }
 
+.ticket-option.active .ticket-avatar {
+    color: #c7da30;
+}
 
 .price-icon {
     width: 1.4rem;

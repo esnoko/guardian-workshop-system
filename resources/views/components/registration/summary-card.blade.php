@@ -38,13 +38,13 @@
                 >
                     <span class="ticket-count">{{ $count }}</span>
                     <span class="ticket-avatars">
-                        @for($i = 1; $i <= $count; $i++)
-                            <svg viewBox="0 0 24 24" fill="currentColor" class="ticket-avatar" aria-hidden="true">
-                                <circle cx="12" cy="8" r="4"></circle>
-                                <path d="M12 14c-4 0-6 2-6 4v4h12v-4c0-2-2-4-6-4z"></path>
-                            </svg>
-                        @endfor
-                    </span>
+    @for($i = 1; $i <= $count; $i++)
+        <svg viewBox="0 0 512 512" class="ticket-avatar" aria-hidden="true">
+            <circle cx="256" cy="160" r="80" />
+            <path d="M80 400c0-88 72-160 160-160h32c88 0 160 72 160 160v16H80z" />
+        </svg>
+    @endfor
+</span>
                 </button>
             @endforeach
         </div>
