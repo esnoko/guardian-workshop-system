@@ -28,26 +28,34 @@
         </label>
 
         <label>
+            <span class="field-label">
             School Name<span class="required">*</span>
+            </span>
             <input type="text" name="school_name" placeholder="Enter your school name" value="{{ old('school_name') }}" required>
             @error('school_name')<span class="field-error">{{ $message }}</span>@enderror
         </label>
 
         <label>
+            <span class="field-label">
             Email Address<span class="required">*</span>
+            </span>
             <input type="email" name="email_address" placeholder="Enter your email address" value="{{ old('email_address') }}" required>
             @error('email_address')<span class="field-error">{{ $message }}</span>@enderror
         </label>
 
         <label>
+            <span class="field-label">
             Phone Number<span class="required">*</span>
+            </span>
             <input type="text" name="phone_number" placeholder="Enter your phone number" value="{{ old('phone_number') }}" required>
             @error('phone_number')<span class="field-error">{{ $message }}</span>@enderror
         </label>
 
         <div class="split-fields">
             <label>
+                <span class="field-label">
                 Province / Region<span class="required">*</span>
+                </span>
                 <select name="province_region" required>
                     <option value="">Select Province/Region</option>
                     <option value="Gauteng" {{ old('province_region') === 'Gauteng' ? 'selected' : '' }}>Gauteng</option>
@@ -63,7 +71,9 @@
             </label>
 
             <label>
+                <span class="field-label">
                 District<span class="required">*</span>
+                </span>
                 <select name="district" required>
                     <option value="">Select District</option>
                     <option value="Johannesburg North" {{ old('district') === 'Johannesburg North' ? 'selected' : '' }}>Johannesburg North</option>
@@ -76,7 +86,9 @@
         </div>
 
         <label>
+            <span class="field-label">
             Position / Role<span class="required">*</span>
+            </span>
             <input type="text" name="position_role" placeholder="Enter your position / Role" value="{{ old('position_role') }}" required>
             @error('position_role')<span class="field-error">{{ $message }}</span>@enderror
         </label>

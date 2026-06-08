@@ -6,7 +6,7 @@
 }
 
 .continue-btn {
-    min-width: 138px;
+    min-width: 180px;
     border: 2px solid var(--line);
     background: transparent;
     color: #5da7b2;
