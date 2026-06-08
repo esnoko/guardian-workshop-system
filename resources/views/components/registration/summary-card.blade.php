@@ -35,7 +35,6 @@
                     data-ticket-price="{{ $ticketPrice }}"
                     data-subtotal="{{ $ticketPrice * $count }}"
                     data-grand-total="{{ $ticketPrice * $count * 1.15 }}"
-                    data-ticket-number="{{ $ticketNumber }}_{{ $count }}"
                 >
                     <span class="ticket-count">{{ $count }}</span>
                     <span class="ticket-avatars">
@@ -54,12 +53,12 @@
     <div class="summary-divider"></div>
 
     <div class="ticket-number-row">
-        <span>Ticket Number</span>
-        <strong id="ticketNumberDisplay">{{ $ticketNumber }}_{{ $currentSelectedTickets }}</strong>
+        <span>Reference Number</span>
+        <strong>Assigned after registration</strong>
     </div>
 
     <div class="seat-box">
-        <p><strong>Seat Numbers</strong> (To be assigned after registration)</p>
+        <p><strong>Seat Numbers</strong></p>
         <div id="seatPreviewList">
             @for($i = 1; $i <= $currentSelectedTickets; $i++)
                 <div class="seat-line">
