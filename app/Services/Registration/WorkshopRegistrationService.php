@@ -26,6 +26,16 @@ class WorkshopRegistrationService
     {
         $email = trim(strtolower($validated['email_address']));
         $ticketCount = (int) $validated['ticket_count'];
+        $additionalAttendees = array_values(array_map(function (array $attendee): array {
+            return [
+                'full_name' => trim((string) ($attendee['full_name'] ?? '')),
+                'school_name' => trim((string) ($attendee['school_name'] ?? '')),
+                'phone_number' => trim((string) ($attendee['phone_number'] ?? '')),
+                'province_region' => trim((string) ($attendee['province_region'] ?? '')),
+                'district' => trim((string) ($attendee['district'] ?? '')),
+                'position_role' => trim((string) ($attendee['position_role'] ?? '')),
+            ];
+        }, (array) ($validated['additional_attendees'] ?? [])));
 
         $session->loadMissing('workshop');
         $ticketPrice = (float) ($session->workshop?->fee ?? 0);
@@ -33,7 +43,7 @@ class WorkshopRegistrationService
         $subtotal = $ticketPrice * $ticketCount;
         $grandTotal = $subtotal * (1 + $vatRate);
 
-        $registration = DB::transaction(function () use ($session, $validated, $email, $ticketCount, $grandTotal) {
+        $registration = DB::transaction(function () use ($session, $validated, $email, $ticketCount, $grandTotal, $additionalAttendees) {
             $lockedSession = WorkshopSession::query()
                 ->whereKey($session->id)
                 ->lockForUpdate()
@@ -72,6 +82,7 @@ class WorkshopRegistrationService
                 'province_region' => $validated['province_region'],
                 'district' => $validated['district'],
                 'position_role' => $validated['position_role'],
+                'additional_attendees' => $additionalAttendees,
                 'seat_number' => $seatNumbers,
                 'reference_number' => $referenceNumber,
                 'registration_status' => 'pending',

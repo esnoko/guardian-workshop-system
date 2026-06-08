@@ -17,6 +17,7 @@ class WorkshopRegistration extends Model
         'province_region',
         'position_role',
         'district',
+        'additional_attendees',
         'seat_number',
         'reference_number',
         'registration_status',
@@ -29,6 +30,7 @@ class WorkshopRegistration extends Model
     ];
 
     protected $casts = [
+        'additional_attendees' => 'array',
         'amount_due' => 'decimal:2',
         'amount_paid' => 'decimal:2',
         'registered_at' => 'datetime',
