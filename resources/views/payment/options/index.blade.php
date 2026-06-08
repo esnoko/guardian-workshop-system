@@ -7,18 +7,14 @@
             <div class="payment-card-content">
                 <div class="payment-card-head">
                     <div class="payment-card-brand">
-                        @if (file_exists(public_path('images/payment/payfast-logo.png')))
-                            <img class="payment-brand-logo payment-brand-logo--payfast" src="{{ asset('images/payment/payfast-logo.png') }}" alt="PayFast">
-                        @else
-                            <h2>PayFast</h2>
-                        @endif
+                        <img class="payment-brand-logo payment-brand-logo--payfast" src="{{ asset('images/payfast-logo.png') }}" alt="PayFast">
                         <p>Pay securely via PayFast</p>
                     </div>
                 </div>
                 <ul class="payment-list">
-                    <li><span class="payment-list-icon" aria-hidden="true"></span>Instant eft</li>
-                    <li><span class="payment-list-icon" aria-hidden="true"></span>Credit &amp; Debit Card</li>
-                    <li><span class="payment-list-icon" aria-hidden="true"></span>Secure and trusted payments</li>
+                    <li><img class="payment-list-icon payment-list-icon-img" src="{{ asset('images/Instant_eft.png') }}" alt="" aria-hidden="true">Instant eft</li>
+                    <li><img class="payment-list-icon payment-list-icon-img" src="{{ asset('images/Credit_Debit_Card.png') }}" alt="" aria-hidden="true">Credit &amp; Debit Card</li>
+                    <li><img class="payment-list-icon payment-list-icon-img" src="{{ asset('images/Secure.png') }}" alt="" aria-hidden="true">Secure and trusted payments</li>
                 </ul>
             </div>
         </label>
@@ -29,14 +25,14 @@
             <div class="payment-card-content">
                 <div class="payment-card-head">
                     <div class="payment-card-brand">
-                        <h2>payflex</h2>
+                        <img class="payment-brand-logo payment-brand-logo--payflex" src="{{ asset('images/payflex-logo.png') }}" alt="PayFlex">
                         <p>Get it now, pay later with payflex</p>
                     </div>
                 </div>
                 <ul class="payment-list">
-                    <li><span class="payment-list-icon" aria-hidden="true"></span>Pay in 3 interest-free payments</li>
-                    <li><span class="payment-list-icon" aria-hidden="true"></span>No fees when you pay on time</li>
-                    <li><span class="payment-list-icon" aria-hidden="true"></span>Quick and easy application</li>
+                    <li><img class="payment-list-icon payment-list-icon-img" src="{{ asset('images/pay_in_3.png') }}" alt="" aria-hidden="true">Pay in 3 interest-free payments</li>
+                    <li><img class="payment-list-icon payment-list-icon-img" src="{{ asset('images/no_fees.png') }}" alt="" aria-hidden="true">No fees when you pay on time</li>
+                    <li><img class="payment-list-icon payment-list-icon-img" src="{{ asset('images/Secure.png') }}" alt="" aria-hidden="true">Quick and easy application</li>
                 </ul>
                 <p class="payment-note">Certificate will be withheld until payment is complete</p>
             </div>
