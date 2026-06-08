@@ -93,7 +93,11 @@
             @error('position_role')<span class="field-error">{{ $message }}</span>@enderror
         </label>
 
-        <section class="additional-attendees" id="additionalAttendeesSection">
+        @php
+            $currentSelectedTickets = (int) old('ticket_count', $selectedTickets);
+        @endphp
+
+        <section class="additional-attendees {{ $currentSelectedTickets <= 1 ? 'is-hidden' : '' }}" id="additionalAttendeesSection">
             <h3>Additional Attendee Details</h3>
             <p>Use the same booking email above. Add details for each extra attendee.</p>
 
