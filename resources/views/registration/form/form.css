@@ -128,6 +128,43 @@
     background-color: #ffffff;
 }
 
+.additional-attendees {
+    margin-top: 1rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid #d6e47d;
+    display: grid;
+    gap: 0.85rem;
+}
+
+.additional-attendees h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #1f1f1f;
+}
+
+.additional-attendees p {
+    margin: 0;
+    color: #515151;
+    font-size: 0.9rem;
+}
+
+.additional-attendee-card {
+    border: 1px solid #d6e47d;
+    padding: 0.8rem;
+    display: grid;
+    gap: 0.45rem;
+    background: #fff;
+}
+
+.additional-attendee-card h4 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.additional-attendee-card.is-hidden {
+    display: none;
+}
+
 @media (max-width: 720px) {
     .split-fields {
         grid-template-columns: 1fr;
