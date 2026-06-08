@@ -90,11 +90,11 @@ class PaymentController extends Controller
         $params = [
             'merchant_id' => (string) config('services.payfast.merchant_id', ''),
             'merchant_key' => (string) config('services.payfast.merchant_key', ''),
-            'return_url' => URL::signedRoute('payment.complete', [
+            'return_url' => route('payment.complete', [
                 'registration' => $registration->id,
                 'payment' => $payment->id,
             ]),
-            'cancel_url' => URL::signedRoute('payment.complete', [
+            'cancel_url' => route('payment.complete', [
                 'registration' => $registration->id,
                 'payment' => $payment->id,
             ]),
@@ -150,7 +150,11 @@ class PaymentController extends Controller
         };
 
         return redirect()
-            ->route('registration.confirmation', ['registration' => $registration->id])
+            ->to(URL::temporarySignedRoute(
+                'registration.confirmation',
+                now()->addDays(7),
+                ['registration' => $registration->id],
+            ))
             ->with('success', $message);
     }
 
