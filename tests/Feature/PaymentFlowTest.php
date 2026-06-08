@@ -6,12 +6,23 @@ use App\Models\Payment;
 use App\Models\WorkshopRegistration;
 use App\Models\WorkshopSession;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 
 class PaymentFlowTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        config()->set('services.payfast.merchant_id', '10000100');
+        config()->set('services.payfast.merchant_key', '46f0cd694581a');
+        config()->set('services.payfast.passphrase', 'sandbox-passphrase');
+        config()->set('services.payfast.checkout_url', 'https://sandbox.payfast.co.za/eng/process');
+    }
 
     public function test_payment_page_loads_with_signed_url(): void
     {
@@ -39,8 +50,12 @@ class PaymentFlowTest extends TestCase
         ]);
 
         $payment = Payment::query()->first();
+        $location = (string) $response->headers->get('Location');
 
         $response->assertRedirect();
+        $this->assertNotNull($response->headers->get('Location'));
+        $this->assertStringStartsWith('https://sandbox.payfast.co.za/eng/process?', $location);
+        $this->assertStringContainsString('signature=', $location);
         $this->assertNotNull($payment);
         $this->assertSame('payfast', $payment->payment_method);
         $this->assertSame('processing', $payment->status);
@@ -66,7 +81,124 @@ class PaymentFlowTest extends TestCase
         $this->assertSame('installment', WorkshopRegistration::query()->findOrFail($registration->id)->payment_plan);
     }
 
-    public function test_payment_complete_success_updates_registration_status(): void
+    public function test_payfast_itn_success_finalizes_payment_and_registration(): void
+    {
+        $registration = $this->createRegistration();
+
+        $payment = Payment::query()->create([
+            'registration_id' => $registration->id,
+            'amount' => (float) $registration->amount_due,
+            'payment_method' => 'payfast',
+            'status' => 'processing',
+            'gateway' => 'payfast',
+            'transaction_reference' => 'PAYFAST-' . $registration->reference_number,
+            'installment_number' => 1,
+            'installment_total' => 1,
+            'currency' => 'ZAR',
+            'processed_at' => now(),
+        ]);
+
+        $payload = [
+            'merchant_id' => '10000100',
+            'merchant_key' => '46f0cd694581a',
+            'm_payment_id' => (string) $payment->id,
+            'amount_gross' => number_format((float) $payment->amount, 2, '.', ''),
+            'payment_status' => 'COMPLETE',
+            'pf_payment_id' => 'PF123456',
+            'item_name' => 'Workshop Registration',
+        ];
+
+        $payload['signature'] = $this->generateSignatureForTest($payload);
+
+        $response = $this->post(route('payment.payfast.itn'), $payload);
+
+        $response->assertOk();
+
+        $payment->refresh();
+        $registration->refresh();
+
+        $this->assertSame('completed', $payment->status);
+        $this->assertSame('PF123456', $payment->gateway_transaction_id);
+        $this->assertSame('paid', $registration->registration_status);
+        $this->assertEquals((float) $registration->amount_due, (float) $registration->amount_paid);
+    }
+
+    public function test_payfast_itn_with_invalid_signature_is_rejected(): void
+    {
+        $registration = $this->createRegistration();
+
+        $payment = Payment::query()->create([
+            'registration_id' => $registration->id,
+            'amount' => (float) $registration->amount_due,
+            'payment_method' => 'payfast',
+            'status' => 'processing',
+            'gateway' => 'payfast',
+            'transaction_reference' => 'PAYFAST-' . $registration->reference_number,
+            'installment_number' => 1,
+            'installment_total' => 1,
+            'currency' => 'ZAR',
+            'processed_at' => now(),
+        ]);
+
+        $payload = [
+            'merchant_id' => '10000100',
+            'merchant_key' => '46f0cd694581a',
+            'm_payment_id' => (string) $payment->id,
+            'amount_gross' => number_format((float) $payment->amount, 2, '.', ''),
+            'payment_status' => 'COMPLETE',
+            'signature' => 'invalidsignature',
+        ];
+
+        $response = $this->post(route('payment.payfast.itn'), $payload);
+
+        $response->assertStatus(400);
+
+        $payment->refresh();
+        $registration->refresh();
+
+        $this->assertSame('processing', $payment->status);
+        $this->assertSame('pending', $registration->registration_status);
+    }
+
+    public function test_payfast_itn_is_idempotent_for_repeated_callbacks(): void
+    {
+        $registration = $this->createRegistration();
+
+        $payment = Payment::query()->create([
+            'registration_id' => $registration->id,
+            'amount' => (float) $registration->amount_due,
+            'payment_method' => 'payfast',
+            'status' => 'processing',
+            'gateway' => 'payfast',
+            'transaction_reference' => 'PAYFAST-' . $registration->reference_number,
+            'installment_number' => 1,
+            'installment_total' => 1,
+            'currency' => 'ZAR',
+            'processed_at' => now(),
+        ]);
+
+        $payload = [
+            'merchant_id' => '10000100',
+            'merchant_key' => '46f0cd694581a',
+            'm_payment_id' => (string) $payment->id,
+            'amount_gross' => number_format((float) $payment->amount, 2, '.', ''),
+            'payment_status' => 'COMPLETE',
+            'pf_payment_id' => 'PF123456',
+        ];
+
+        $payload['signature'] = $this->generateSignatureForTest($payload);
+
+        $this->post(route('payment.payfast.itn'), $payload)->assertOk();
+        $this->post(route('payment.payfast.itn'), $payload)->assertOk();
+
+        $payment->refresh();
+        $registration->refresh();
+
+        $this->assertSame('completed', $payment->status);
+        $this->assertEquals((float) $registration->amount_due, (float) $registration->amount_paid);
+    }
+
+    public function test_payment_complete_route_does_not_finalize_without_gateway_callback(): void
     {
         $registration = $this->createRegistration();
 
@@ -86,7 +218,6 @@ class PaymentFlowTest extends TestCase
         $completeUrl = URL::signedRoute('payment.complete', [
             'registration' => $registration->id,
             'payment' => $payment->id,
-            'status' => 'success',
         ]);
 
         $response = $this->get($completeUrl);
@@ -96,9 +227,9 @@ class PaymentFlowTest extends TestCase
         $registration->refresh();
         $payment->refresh();
 
-        $this->assertSame('completed', $payment->status);
-        $this->assertSame('paid', $registration->registration_status);
-        $this->assertEquals((float) $registration->amount_due, (float) $registration->amount_paid);
+        $this->assertSame('processing', $payment->status);
+        $this->assertSame('pending', $registration->registration_status);
+        $this->assertEquals(0.0, (float) $registration->amount_paid);
     }
 
     private function createRegistration(): WorkshopRegistration
@@ -116,13 +247,35 @@ class PaymentFlowTest extends TestCase
             'province_region' => 'Gauteng',
             'district' => 'Tshwane',
             'position_role' => 'Teacher',
-            'seat_number' => 'WS01-30062026-0001,WS01-30062026-0002,WS01-30062026-0003',
-            'reference_number' => 'TESTER-WS01-30062026-0001-30062026',
+            'seat_number' => '080626_1,080626_2,080626_3',
+            'reference_number' => 'TESTER-WS01-0001-08062026',
             'registration_status' => 'pending',
             'payment_plan' => 'full',
             'amount_due' => 5347.50,
             'amount_paid' => 0,
             'registered_at' => now(),
         ]);
+    }
+
+    /**
+     * @param array<string, string> $payload
+     */
+    private function generateSignatureForTest(array $payload): string
+    {
+        $params = Arr::except($payload, ['signature']);
+
+        $pairs = [];
+        foreach ($params as $key => $value) {
+            if ($value === '') {
+                continue;
+            }
+
+            $pairs[] = $key . '=' . urlencode(trim((string) $value));
+        }
+
+        $signatureBase = implode('&', $pairs);
+        $signatureBase .= '&passphrase=' . urlencode('sandbox-passphrase');
+
+        return md5($signatureBase);
     }
 }

@@ -70,7 +70,7 @@ class WorkshopRegistrationService
             $referenceNumber = $this->referenceNumberGenerator->generate(
                 $validated['full_name'],
                 (string) ($seatCodes[0] ?? ''),
-                $lockedSession->session_date->format('dmY')
+                now()->format('dmY')
             );
 
             $registration = WorkshopRegistration::create([
