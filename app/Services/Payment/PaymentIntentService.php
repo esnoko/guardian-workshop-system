@@ -44,12 +44,41 @@ class PaymentIntentService
 
     public function finalize(WorkshopRegistration $registration, Payment $payment, bool $success): void
     {
-        DB::transaction(function () use ($registration, $payment, $success) {
+        $this->finalizeFromGateway(
+            registration: $registration,
+            payment: $payment,
+            success: $success,
+            gatewayTransactionId: null,
+            gatewayResponse: null,
+            failureReason: $success ? null : 'Gateway reported failure during redirect simulation.',
+        );
+    }
+
+    /**
+     * @param array<string, mixed>|null $gatewayResponse
+     */
+    public function finalizeFromGateway(
+        WorkshopRegistration $registration,
+        Payment $payment,
+        bool $success,
+        ?string $gatewayTransactionId = null,
+        ?array $gatewayResponse = null,
+        ?string $failureReason = null,
+    ): void {
+        DB::transaction(function () use ($registration, $payment, $success, $gatewayTransactionId, $gatewayResponse, $failureReason) {
+            $payment->refresh();
+            $registration->refresh();
+
+            if (in_array($payment->status, ['completed', 'failed', 'cancelled'], true)) {
+                return;
+            }
+
             if ($success) {
                 $payment->update([
                     'status' => 'completed',
                     'paid_at' => now(),
-                    'gateway_transaction_id' => $payment->gateway_transaction_id ?: 'TXN-' . now()->format('YmdHis') . '-' . $payment->id,
+                    'gateway_transaction_id' => $gatewayTransactionId ?: $payment->gateway_transaction_id ?: 'TXN-' . now()->format('YmdHis') . '-' . $payment->id,
+                    'gateway_response' => $gatewayResponse ? json_encode($gatewayResponse) : $payment->gateway_response,
                 ]);
 
                 $newAmountPaid = (float) $registration->amount_paid + (float) $payment->amount;
@@ -63,7 +92,28 @@ class PaymentIntentService
 
             $payment->update([
                 'status' => 'failed',
-                'failure_reason' => 'Gateway reported failure during redirect simulation.',
+                'failure_reason' => $failureReason ?: 'Gateway reported failure during redirect simulation.',
+                'gateway_response' => $gatewayResponse ? json_encode($gatewayResponse) : $payment->gateway_response,
+            ]);
+        });
+    }
+
+    /**
+     * @param array<string, mixed>|null $gatewayResponse
+     */
+    public function markFailed(Payment $payment, string $reason, ?array $gatewayResponse = null): void
+    {
+        DB::transaction(function () use ($payment, $reason, $gatewayResponse) {
+            $payment->refresh();
+
+            if (in_array($payment->status, ['completed', 'failed', 'cancelled'], true)) {
+                return;
+            }
+
+            $payment->update([
+                'status' => 'failed',
+                'failure_reason' => $reason,
+                'gateway_response' => $gatewayResponse ? json_encode($gatewayResponse) : $payment->gateway_response,
             ]);
         });
     }
