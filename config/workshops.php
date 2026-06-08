@@ -11,6 +11,7 @@ return [
         'vat_rate' => 0.15, // 15% VAT
         'max_tickets_per_registration' => 3,
         'reference_number_prefix' => 'REF',
+        'pending_expiry_minutes' => 120,
     ],
 
     'payment' => [
