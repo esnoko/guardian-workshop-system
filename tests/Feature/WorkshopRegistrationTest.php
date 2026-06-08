@@ -29,6 +29,24 @@ class WorkshopRegistrationTest extends TestCase
             'district' => 'Tshwane',
             'position_role' => 'Teacher',
             'ticket_count' => 3,
+            'additional_attendees' => [
+                [
+                    'full_name' => 'Attendee Two',
+                    'school_name' => 'School Two',
+                    'phone_number' => '0711111111',
+                    'province_region' => 'Gauteng',
+                    'district' => 'Tshwane',
+                    'position_role' => 'Teacher',
+                ],
+                [
+                    'full_name' => 'Attendee Three',
+                    'school_name' => 'School Three',
+                    'phone_number' => '0722222222',
+                    'province_region' => 'Limpopo',
+                    'district' => 'Tshwane',
+                    'position_role' => 'HOD',
+                ],
+            ],
         ]);
 
         $registration = WorkshopRegistration::query()->first();
@@ -145,5 +163,77 @@ class WorkshopRegistrationTest extends TestCase
 
         $signed = $this->get($signedUrl);
         $signed->assertOk();
+    }
+
+    public function test_additional_attendees_are_required_for_multi_ticket_registration(): void
+    {
+        $session = WorkshopSession::factory()->create([
+            'status' => 'upcoming',
+            'max_capacity' => 10,
+            'registrations_count' => 0,
+        ]);
+
+        $response = $this->from(route('workshops.register', ['session' => $session->id]))
+            ->post(route('registrations.store', ['session' => $session->id]), [
+                'full_name' => 'Primary Booker',
+                'school_name' => 'Main School',
+                'email_address' => 'booker@example.com',
+                'phone_number' => '0764923096',
+                'province_region' => 'Limpopo',
+                'district' => 'Tshwane',
+                'position_role' => 'Teacher',
+                'ticket_count' => 3,
+            ]);
+
+        $response->assertRedirect(route('workshops.register', ['session' => $session->id]));
+        $response->assertSessionHasErrors('additional_attendees');
+        $this->assertEquals(0, WorkshopRegistration::query()->count());
+    }
+
+    public function test_additional_attendees_are_saved_for_multi_ticket_registration(): void
+    {
+        $session = WorkshopSession::factory()->create([
+            'status' => 'upcoming',
+            'max_capacity' => 10,
+            'registrations_count' => 0,
+        ]);
+
+        $response = $this->post(route('registrations.store', ['session' => $session->id]), [
+            'full_name' => 'Primary Booker',
+            'school_name' => 'Main School',
+            'email_address' => 'booker@example.com',
+            'phone_number' => '0764923096',
+            'province_region' => 'Limpopo',
+            'district' => 'Tshwane',
+            'position_role' => 'Teacher',
+            'ticket_count' => 3,
+            'additional_attendees' => [
+                [
+                    'full_name' => 'Attendee Two',
+                    'school_name' => 'School Two',
+                    'phone_number' => '0711111111',
+                    'province_region' => 'Gauteng',
+                    'district' => 'Tshwane',
+                    'position_role' => 'Teacher',
+                ],
+                [
+                    'full_name' => 'Attendee Three',
+                    'school_name' => 'School Three',
+                    'phone_number' => '0722222222',
+                    'province_region' => 'Limpopo',
+                    'district' => 'Tshwane',
+                    'position_role' => 'HOD',
+                ],
+            ],
+        ]);
+
+        $response->assertRedirect();
+
+        $registration = WorkshopRegistration::query()->first();
+        $this->assertNotNull($registration);
+        $this->assertIsArray($registration->additional_attendees);
+        $this->assertCount(2, $registration->additional_attendees);
+        $this->assertSame('Attendee Two', $registration->additional_attendees[0]['full_name']);
+        $this->assertSame('booker@example.com', $registration->email_address);
     }
 }
