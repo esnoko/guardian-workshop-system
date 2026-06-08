@@ -91,7 +91,6 @@
                 const ticketCountInput = document.getElementById('ticketCountInput');
                 const subtotalElement = document.getElementById('subtotalDisplay');
                 const grandTotalElement = document.getElementById('grandTotalDisplay');
-                const ticketNumberDisplay = document.getElementById('ticketNumberDisplay');
                 const seatPreviewList = document.getElementById('seatPreviewList');
                 const additionalAttendeeCards = document.querySelectorAll('.additional-attendee-card');
 
@@ -146,11 +145,6 @@
                     // Update hidden input for form submission
                     if (ticketCountInput) {
                         ticketCountInput.value = String(ticketCount);
-                    }
-
-                    // Update ticket number preview
-                    if (ticketNumberDisplay && button.dataset.ticketNumber) {
-                        ticketNumberDisplay.textContent = button.dataset.ticketNumber;
                     }
 
                     // Update seat lines preview
