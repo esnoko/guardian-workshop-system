@@ -25,9 +25,5 @@
 <footer class="page-footer">
     <div class="footer-content">
         <p>&copy; 2026 Tekete Safe Space From Moepi Publishing. All rights reserved.</p>
-        <div class="payment-methods" aria-label="Accepted payment methods">
-            <img src="{{ asset('images/payfast-logo-png_seeklogo-339550 (1).png') }}" alt="PayFast" class="payment-logo">
-            <img src="{{ asset('images/payflex-pty-ltd-logo-vector (1).png') }}" alt="PayFlex" class="payment-logo">
-        </div>
     </div>
 </footer>
