@@ -150,11 +150,7 @@ class PaymentController extends Controller
         };
 
         return redirect()
-            ->to(URL::temporarySignedRoute(
-                'registration.confirmation',
-                now()->addDays(7),
-                ['registration' => $registration->id],
-            ))
+            ->route('workshops.index')
             ->with('success', $message);
     }
 

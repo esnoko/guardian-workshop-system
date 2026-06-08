@@ -92,6 +92,7 @@
                 const subtotalElement = document.getElementById('subtotalDisplay');
                 const grandTotalElement = document.getElementById('grandTotalDisplay');
                 const seatPreviewList = document.getElementById('seatPreviewList');
+                const additionalAttendeesSection = document.getElementById('additionalAttendeesSection');
                 const additionalAttendeeCards = document.querySelectorAll('.additional-attendee-card');
 
                 function setAttendeeCardEnabled(card, enabled) {
@@ -110,6 +111,10 @@
 
                 function syncAdditionalAttendeeCards(ticketCount) {
                     const requiredAdditional = Math.max(0, ticketCount - 1);
+
+                    if (additionalAttendeesSection) {
+                        additionalAttendeesSection.classList.toggle('is-hidden', requiredAdditional === 0);
+                    }
 
                     additionalAttendeeCards.forEach((card, index) => {
                         setAttendeeCardEnabled(card, index < requiredAdditional);
