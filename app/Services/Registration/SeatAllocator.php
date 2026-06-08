@@ -39,9 +39,8 @@ class SeatAllocator
 
     private function formatSeatCode(WorkshopSession $session, int $seatNumber): string
     {
-        $sessionCode = str_pad((string) $session->id, 2, '0', STR_PAD_LEFT);
-        $dateCode = $session->session_date->format('dmY');
+        $dateCode = $session->session_date->format('dmy');
 
-        return "WS{$sessionCode}-{$dateCode}-" . str_pad((string) $seatNumber, 4, '0', STR_PAD_LEFT);
+        return "{$dateCode}_{$seatNumber}";
     }
 }
