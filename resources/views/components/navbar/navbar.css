@@ -106,12 +106,13 @@
 
 .top-nav {
     display: inline-flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 1.45rem;
-    font-size: 1.5rem;
-    font-family: 'Inter', sans-serif;
+    font-size: 1.3rem;
+    font-family: "Montserrat" "world", sans-serif;
     font-weight: 500;
-    letter-spacing: -0.01em;
+    letter-spacing: 0.057em;
+    margin-right: -5;
 }
 
 .top-nav a {
