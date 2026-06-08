@@ -6,16 +6,20 @@
 }
 
 .continue-btn {
-    min-width: 180px;
+    min-width: 230px;
+    height: 56px;
     border: 2px solid var(--line);
     background: transparent;
     color: #5da7b2;
     border-radius: 999px;
     font-weight: 600;
-    padding: 0.46rem 1.2rem;
+    font-size: 1.05rem;
     cursor: pointer;
     transition: all 0.2s ease;
-    font-size: 0.95rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .continue-btn:hover {
