@@ -41,6 +41,15 @@ return [
         'passphrase' => env('PAYFAST_PASSPHRASE', ''),
         'sandbox' => env('PAYFAST_SANDBOX', true),
         'checkout_url' => env('PAYFAST_CHECKOUT_URL', 'https://sandbox.payfast.co.za/eng/process'),
+        'validation_url' => env('PAYFAST_VALIDATION_URL', 'https://sandbox.payfast.co.za/eng/query/validate'),
+        'validate_itn_ip' => env('PAYFAST_VALIDATE_ITN_IP', true),
+        'validate_itn_server' => env('PAYFAST_VALIDATE_ITN_SERVER', true),
+        'valid_hosts' => [
+            'www.payfast.co.za',
+            'sandbox.payfast.co.za',
+            'w1w.payfast.co.za',
+            'w2w.payfast.co.za',
+        ],
     ],
 
 ];

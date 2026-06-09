@@ -19,6 +19,7 @@
             </div>
         </label>
 
+        @if ($payflexEnabled ?? false)
         <label class="payment-card" for="payment-method-payflex">
             <input id="payment-method-payflex" class="payment-method-input" type="radio" name="payment_method" value="payflex">
             <span class="payment-method-control" aria-hidden="true"></span>
@@ -30,13 +31,14 @@
                     </div>
                 </div>
                 <ul class="payment-list">
-                    <li><img class="payment-list-icon payment-list-icon-img" src="{{ asset('images/pay_in_3.png') }}" alt="" aria-hidden="true">Pay in 3 interest-free payments</li>
-                    <li><img class="payment-list-icon payment-list-icon-img" src="{{ asset('images/no_fees.png') }}" alt="" aria-hidden="true">No fees when you pay on time</li>
+                    <li><img class="payment-list-icon payment-list-icon-img" src="{{ asset('images/Pay_in_3.png') }}" alt="" aria-hidden="true">Pay in 3 interest-free payments</li>
+                    <li><img class="payment-list-icon payment-list-icon-img" src="{{ asset('images/No_fees.png') }}" alt="" aria-hidden="true">No fees when you pay on time</li>
                     <li><img class="payment-list-icon payment-list-icon-img" src="{{ asset('images/Secure.png') }}" alt="" aria-hidden="true">Quick and easy application</li>
                 </ul>
                 <p class="payment-note">Certificate will be withheld until payment is complete</p>
             </div>
         </label>
+        @endif
     </div>
     <button class="payment-action payment-action--primary" type="submit">Continue with selected method</button>
 </form>

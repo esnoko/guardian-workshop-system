@@ -5,6 +5,7 @@ namespace App\Services\Payment;
 use App\Models\Payment;
 use App\Models\WorkshopRegistration;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class PaymentIntentService
 {
@@ -12,6 +13,14 @@ class PaymentIntentService
     {
         return DB::transaction(function () use ($registration, $method) {
             $registration->refresh();
+
+            if ($method !== 'payfast') {
+                throw new HttpException(422, 'This payment method is not available yet.');
+            }
+
+            if (! $this->canStartPayment($registration)) {
+                throw new HttpException(422, 'This registration is no longer available for payment.');
+            }
 
             $isPayflex = $method === 'payflex';
             $installmentTotal = $isPayflex ? 3 : 1;
@@ -29,7 +38,7 @@ class PaymentIntentService
                 'payment_method' => $method,
                 'status' => 'processing',
                 'gateway' => $method,
-                'transaction_reference' => strtoupper($method) . '-' . $registration->reference_number,
+                'transaction_reference' => strtoupper($method).'-'.$registration->reference_number,
                 'installment_number' => 1,
                 'installment_total' => $installmentTotal,
                 'currency' => 'ZAR',
@@ -40,6 +49,27 @@ class PaymentIntentService
                 'processed_at' => now(),
             ]);
         });
+    }
+
+    public function canStartPayment(WorkshopRegistration $registration): bool
+    {
+        $registration->refresh();
+
+        if ($registration->registration_status !== 'pending') {
+            return false;
+        }
+
+        if ((float) $registration->amount_due <= 0) {
+            return false;
+        }
+
+        if ((float) $registration->amount_paid >= (float) $registration->amount_due) {
+            return false;
+        }
+
+        $expiryMinutes = (int) config('workshops.registration.pending_expiry_minutes', 120);
+
+        return $expiryMinutes <= 0 || $registration->created_at?->gt(now()->subMinutes($expiryMinutes));
     }
 
     public function finalize(WorkshopRegistration $registration, Payment $payment, bool $success): void
@@ -55,7 +85,7 @@ class PaymentIntentService
     }
 
     /**
-     * @param array<string, mixed>|null $gatewayResponse
+     * @param  array<string, mixed>|null  $gatewayResponse
      */
     public function finalizeFromGateway(
         WorkshopRegistration $registration,
@@ -77,7 +107,7 @@ class PaymentIntentService
                 $payment->update([
                     'status' => 'completed',
                     'paid_at' => now(),
-                    'gateway_transaction_id' => $gatewayTransactionId ?: $payment->gateway_transaction_id ?: 'TXN-' . now()->format('YmdHis') . '-' . $payment->id,
+                    'gateway_transaction_id' => $gatewayTransactionId ?: $payment->gateway_transaction_id ?: 'TXN-'.now()->format('YmdHis').'-'.$payment->id,
                     'gateway_response' => $gatewayResponse ? json_encode($gatewayResponse) : $payment->gateway_response,
                 ]);
 
@@ -99,7 +129,7 @@ class PaymentIntentService
     }
 
     /**
-     * @param array<string, mixed>|null $gatewayResponse
+     * @param  array<string, mixed>|null  $gatewayResponse
      */
     public function markFailed(Payment $payment, string $reason, ?array $gatewayResponse = null): void
     {

@@ -7,6 +7,7 @@ use App\Models\WorkshopRegistration;
 use App\Models\WorkshopSession;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 
@@ -22,6 +23,9 @@ class PaymentFlowTest extends TestCase
         config()->set('services.payfast.merchant_key', '46f0cd694581a');
         config()->set('services.payfast.passphrase', 'sandbox-passphrase');
         config()->set('services.payfast.checkout_url', 'https://sandbox.payfast.co.za/eng/process');
+        config()->set('services.payfast.validate_itn_ip', false);
+        config()->set('services.payfast.validate_itn_server', false);
+        config()->set('services.payflex.enabled', false);
     }
 
     public function test_payment_page_loads_with_signed_url(): void
@@ -35,7 +39,7 @@ class PaymentFlowTest extends TestCase
         $response->assertOk();
         $response->assertSee('Payment');
         $response->assertSee('PayFast');
-        $response->assertSee('payflex');
+        $response->assertDontSee('payment-method-payflex');
     }
 
     public function test_payfast_initiation_creates_processing_payment(): void
@@ -62,7 +66,7 @@ class PaymentFlowTest extends TestCase
         $this->assertEquals((float) $registration->amount_due, (float) $payment->amount);
     }
 
-    public function test_payflex_initiation_creates_installment_payment(): void
+    public function test_payflex_is_rejected_when_not_enabled(): void
     {
         $registration = $this->createRegistration();
 
@@ -71,14 +75,10 @@ class PaymentFlowTest extends TestCase
         $this->post($url, [
             'payment_method' => 'payflex',
             'payment_plan' => 'installment',
-        ])->assertRedirect();
+        ])->assertSessionHasErrors('payment_method');
 
-        $payment = Payment::query()->first();
-
-        $this->assertNotNull($payment);
-        $this->assertSame('payflex', $payment->payment_method);
-        $this->assertSame(3, $payment->installment_total);
-        $this->assertSame('installment', WorkshopRegistration::query()->findOrFail($registration->id)->payment_plan);
+        $this->assertSame(0, Payment::query()->count());
+        $this->assertSame('full', WorkshopRegistration::query()->findOrFail($registration->id)->payment_plan);
     }
 
     public function test_payfast_itn_success_finalizes_payment_and_registration(): void
@@ -91,7 +91,7 @@ class PaymentFlowTest extends TestCase
             'payment_method' => 'payfast',
             'status' => 'processing',
             'gateway' => 'payfast',
-            'transaction_reference' => 'PAYFAST-' . $registration->reference_number,
+            'transaction_reference' => 'PAYFAST-'.$registration->reference_number,
             'installment_number' => 1,
             'installment_total' => 1,
             'currency' => 'ZAR',
@@ -133,7 +133,7 @@ class PaymentFlowTest extends TestCase
             'payment_method' => 'payfast',
             'status' => 'processing',
             'gateway' => 'payfast',
-            'transaction_reference' => 'PAYFAST-' . $registration->reference_number,
+            'transaction_reference' => 'PAYFAST-'.$registration->reference_number,
             'installment_number' => 1,
             'installment_total' => 1,
             'currency' => 'ZAR',
@@ -170,7 +170,7 @@ class PaymentFlowTest extends TestCase
             'payment_method' => 'payfast',
             'status' => 'processing',
             'gateway' => 'payfast',
-            'transaction_reference' => 'PAYFAST-' . $registration->reference_number,
+            'transaction_reference' => 'PAYFAST-'.$registration->reference_number,
             'installment_number' => 1,
             'installment_total' => 1,
             'currency' => 'ZAR',
@@ -208,7 +208,7 @@ class PaymentFlowTest extends TestCase
             'payment_method' => 'payfast',
             'status' => 'processing',
             'gateway' => 'payfast',
-            'transaction_reference' => 'PAYFAST-' . $registration->reference_number,
+            'transaction_reference' => 'PAYFAST-'.$registration->reference_number,
             'installment_number' => 1,
             'installment_total' => 1,
             'currency' => 'ZAR',
@@ -232,13 +232,46 @@ class PaymentFlowTest extends TestCase
         $this->assertEquals(0.0, (float) $registration->amount_paid);
     }
 
-    private function createRegistration(): WorkshopRegistration
+    public function test_expired_registration_cannot_start_payment(): void
+    {
+        config()->set('workshops.registration.pending_expiry_minutes', 120);
+
+        $registration = $this->createRegistration([
+            'created_at' => Carbon::now()->subHours(3),
+            'updated_at' => Carbon::now()->subHours(3),
+        ]);
+
+        $url = URL::signedRoute('payment.start', ['registration' => $registration->id]);
+
+        $this->get($url)
+            ->assertRedirect(route('workshops.index'))
+            ->assertSessionHas('error');
+    }
+
+    public function test_cancelled_registration_cannot_create_payment(): void
+    {
+        $registration = $this->createRegistration([
+            'registration_status' => 'cancelled',
+            'cancelled_at' => now(),
+        ]);
+
+        $url = URL::signedRoute('payment.initiate', ['registration' => $registration->id]);
+
+        $this->from(URL::signedRoute('payment.start', ['registration' => $registration->id]))
+            ->post($url, ['payment_method' => 'payfast'])
+            ->assertRedirect()
+            ->assertSessionHas('error');
+
+        $this->assertSame(0, Payment::query()->count());
+    }
+
+    private function createRegistration(array $overrides = []): WorkshopRegistration
     {
         $session = WorkshopSession::factory()->create([
             'status' => 'upcoming',
         ]);
 
-        return WorkshopRegistration::query()->create([
+        $registration = WorkshopRegistration::query()->create([
             'workshop_session_id' => $session->id,
             'full_name' => 'Payment Tester',
             'school_name' => 'Test School',
@@ -255,10 +288,17 @@ class PaymentFlowTest extends TestCase
             'amount_paid' => 0,
             'registered_at' => now(),
         ]);
+
+        if ($overrides !== []) {
+            $registration->forceFill($overrides)->save();
+            $registration->refresh();
+        }
+
+        return $registration;
     }
 
     /**
-     * @param array<string, string> $payload
+     * @param  array<string, string>  $payload
      */
     private function generateSignatureForTest(array $payload): string
     {
@@ -270,11 +310,11 @@ class PaymentFlowTest extends TestCase
                 continue;
             }
 
-            $pairs[] = $key . '=' . urlencode(trim((string) $value));
+            $pairs[] = $key.'='.urlencode(trim((string) $value));
         }
 
         $signatureBase = implode('&', $pairs);
-        $signatureBase .= '&passphrase=' . urlencode('sandbox-passphrase');
+        $signatureBase .= '&passphrase='.urlencode('sandbox-passphrase');
 
         return md5($signatureBase);
     }

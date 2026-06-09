@@ -2,9 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Mail\RegistrationConfirmationMail;
 use App\Models\WorkshopRegistration;
 use App\Models\WorkshopSession;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 
@@ -14,6 +16,8 @@ class WorkshopRegistrationTest extends TestCase
 
     public function test_user_can_register_and_get_signed_payment_redirect(): void
     {
+        Mail::fake();
+
         $session = WorkshopSession::factory()->create([
             'status' => 'upcoming',
             'max_capacity' => 10,
@@ -60,6 +64,13 @@ class WorkshopRegistrationTest extends TestCase
         $this->assertNotNull($redirectTarget);
         $this->assertStringContainsString('signature=', (string) $redirectTarget);
         $this->assertStringContainsString('/payment', (string) $redirectTarget);
+
+        Mail::assertSent(RegistrationConfirmationMail::class, function (RegistrationConfirmationMail $mail) use ($registration) {
+            return $mail->hasTo($registration->email_address)
+                && $mail->registration->is($registration)
+                && str_contains($mail->confirmationUrl, 'signature=')
+                && str_contains($mail->paymentUrl, 'signature=');
+        });
     }
 
     public function test_duplicate_email_for_same_session_is_rejected(): void
@@ -130,6 +141,65 @@ class WorkshopRegistrationTest extends TestCase
         $response->assertRedirect(route('workshops.register', ['session' => $session->id]));
         $response->assertSessionHas('error');
         $this->assertEquals(1, WorkshopRegistration::query()->count());
+    }
+
+    public function test_seat_allocation_does_not_reuse_active_seat_after_cancelled_gap(): void
+    {
+        $session = WorkshopSession::factory()->create([
+            'status' => 'upcoming',
+            'session_date' => '2026-06-30',
+            'max_capacity' => 5,
+            'registrations_count' => 1,
+        ]);
+
+        WorkshopRegistration::query()->create([
+            'workshop_session_id' => $session->id,
+            'full_name' => 'Cancelled User',
+            'school_name' => 'Old School',
+            'email_address' => 'cancelled@example.com',
+            'phone_number' => '0711111111',
+            'province_region' => 'Gauteng',
+            'district' => 'Tshwane',
+            'position_role' => 'Teacher',
+            'seat_number' => '300626_1',
+            'reference_number' => 'CANCELLED-REF-30062026',
+            'registration_status' => 'cancelled',
+            'amount_due' => 1782.50,
+            'registered_at' => now(),
+        ]);
+
+        WorkshopRegistration::query()->create([
+            'workshop_session_id' => $session->id,
+            'full_name' => 'Active User',
+            'school_name' => 'Current School',
+            'email_address' => 'active@example.com',
+            'phone_number' => '0711111112',
+            'province_region' => 'Gauteng',
+            'district' => 'Tshwane',
+            'position_role' => 'Teacher',
+            'seat_number' => '300626_2',
+            'reference_number' => 'ACTIVE-REF-30062026',
+            'registration_status' => 'pending',
+            'amount_due' => 1782.50,
+            'registered_at' => now(),
+        ]);
+
+        $this->post(route('registrations.store', ['session' => $session->id]), [
+            'full_name' => 'New User',
+            'school_name' => 'New School',
+            'email_address' => 'new-seat@example.com',
+            'phone_number' => '0722222222',
+            'province_region' => 'Gauteng',
+            'district' => 'Tshwane',
+            'position_role' => 'Teacher',
+            'ticket_count' => 1,
+        ])->assertRedirect();
+
+        $registration = WorkshopRegistration::query()
+            ->where('email_address', 'new-seat@example.com')
+            ->firstOrFail();
+
+        $this->assertSame('300626_3', $registration->seat_number);
     }
 
     public function test_confirmation_requires_valid_signature(): void
