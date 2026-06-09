@@ -3,20 +3,23 @@
     grid-template-columns: 1fr 170px;
     gap: 1.1rem;
     align-items: end;
-    padding: 2rem 2.2rem 2.6rem;
+    padding: 3rem 2.2rem 2.6rem;
 }
 
 .endorsement-note {
     margin: 0;
-    font-size: 1rem;
-    line-height: 1.45;
-    color: #232323;
+    font-size: 1.1rem;
+    line-height: 1.95;
+    color: black;
+    margin-left: 10px;
+    letter-spacing: 0.03em;
 }
 
 .note-block:first-child .endorsement-note {
     padding-bottom: 1rem;
     border-bottom: 1px solid var(--lime);
     margin-bottom: 1rem;
+    margin-left: 10px;
 }
 
 .note-block {
@@ -24,12 +27,13 @@
     grid-template-columns: 34px 1fr;
     gap: 0.55rem;
     margin-bottom: 0.95rem;
+    margin-left: 25px;
 }
 
 .note-icon {
-    width: 34px;
-    height: 34px;
-    min-width: 34px;
+    width: 88px;
+    height: 88px;
+    min-width: 88px;
     border-radius: 50%;
     background: var(--lime);
     color: #2a2a2a;
@@ -39,15 +43,17 @@
     stroke: #2a2a2a;
     stroke-width: 1.2px;
     margin-top: 0.2rem;
+    margin-left: -35px;
 }
 
 .note-icon-img {
-    width: 38px;
-    height: 38px;
-    min-width: 38px;
+    width: 88px;
+    height: 88px;
+    min-width: 88px;
     object-fit: contain;
     flex-shrink: 0;
     margin-top: 0;
+    margin-left: -35px;
 }
 
 .tekete-logo {
@@ -66,18 +72,24 @@
 }
 
 .sace-logos {
-    justify-self: end;
-    max-width: 180px;
+    justify-self: start;
+    max-width: 370px;
+    width: 380px;
+    height: 370px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    margin-right: 97px;
+    margin-bottom: -2.7rem;
 }
 
 .sace-logo-main {
     max-width: 100%;
     height: auto;
-    max-height: 140px;
+    max-height: 380px;
     object-fit: contain;
+     margin-right: 97px;
+    margin-bottom: -2.7rem;
 }
 
 .page-footer {
