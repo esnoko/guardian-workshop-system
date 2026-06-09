@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -19,6 +19,7 @@ class WorkshopSession extends Model
         'location',
         'status',
         'max_seats',
+        'max_capacity',
     ];
 
     protected $casts = [
@@ -39,9 +40,14 @@ class WorkshopSession extends Model
 
     public function getAvailableSeats(): int
     {
-        if (!$this->max_seats) {
+        $capacity = (int) ($this->max_capacity ?? $this->max_seats ?? 0);
+
+        if (! $capacity) {
             return PHP_INT_MAX;
         }
-        return $this->max_seats - $this->registrations()->count();
+
+        return $capacity - $this->registrations()
+            ->where('registration_status', '!=', 'cancelled')
+            ->count();
     }
 }

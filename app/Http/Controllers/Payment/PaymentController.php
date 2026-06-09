@@ -7,22 +7,30 @@ use App\Models\Payment;
 use App\Models\WorkshopRegistration;
 use App\Services\Payment\PaymentIntentService;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Validation\Rule;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class PaymentController extends Controller
 {
     public function __construct(
         private readonly PaymentIntentService $paymentIntentService,
-    ) {
-    }
+    ) {}
 
-    public function start(WorkshopRegistration $registration): View
+    public function start(WorkshopRegistration $registration): View|RedirectResponse
     {
+        if (! $this->paymentIntentService->canStartPayment($registration)) {
+            return redirect()
+                ->route('workshops.index')
+                ->with('error', 'This registration is no longer available for payment.');
+        }
+
         $registration->loadMissing(['session.workshop']);
 
         $ticketCount = collect(explode(',', (string) $registration->seat_number))
@@ -37,13 +45,14 @@ class PaymentController extends Controller
             'seatNumbers' => collect(explode(',', (string) $registration->seat_number))
                 ->filter()
                 ->values(),
+            'payflexEnabled' => false,
         ]);
     }
 
     public function initiate(Request $request, WorkshopRegistration $registration): RedirectResponse
     {
         $validated = $request->validate([
-            'payment_method' => ['required', 'in:payfast,payflex'],
+            'payment_method' => ['required', Rule::in($this->availablePaymentMethods())],
         ]);
 
         try {
@@ -56,12 +65,7 @@ class PaymentController extends Controller
                 return redirect()->away($this->buildPayfastRedirectUrl($registration, $payment));
             }
 
-            // Placeholder gateway behavior for current phase.
-            return redirect()->route('payment.complete', [
-                'registration' => $registration->id,
-                'payment' => $payment->id,
-                'status' => 'success',
-            ]);
+            throw new HttpException(422, 'This payment method is not available yet.');
         } catch (HttpException $e) {
             return redirect()
                 ->back()
@@ -90,11 +94,11 @@ class PaymentController extends Controller
         $params = [
             'merchant_id' => (string) config('services.payfast.merchant_id', ''),
             'merchant_key' => (string) config('services.payfast.merchant_key', ''),
-            'return_url' => route('payment.complete', [
+            'return_url' => URL::signedRoute('payment.complete', [
                 'registration' => $registration->id,
                 'payment' => $payment->id,
             ]),
-            'cancel_url' => route('payment.complete', [
+            'cancel_url' => URL::signedRoute('payment.complete', [
                 'registration' => $registration->id,
                 'payment' => $payment->id,
             ]),
@@ -112,11 +116,11 @@ class PaymentController extends Controller
 
         $query = http_build_query($params, '', '&', PHP_QUERY_RFC3986);
 
-        return $checkoutUrl . (str_contains($checkoutUrl, '?') ? '&' : '?') . $query;
+        return $checkoutUrl.(str_contains($checkoutUrl, '?') ? '&' : '?').$query;
     }
 
     /**
-     * @param array<string, string> $params
+     * @param  array<string, string>  $params
      */
     private function generatePayfastSignature(array $params): string
     {
@@ -126,14 +130,14 @@ class PaymentController extends Controller
 
         $pairs = [];
         foreach ($cleanParams as $key => $value) {
-            $pairs[] = $key . '=' . urlencode(trim((string) $value));
+            $pairs[] = $key.'='.urlencode(trim((string) $value));
         }
 
         $signatureBase = implode('&', $pairs);
         $passphrase = trim((string) config('services.payfast.passphrase', ''));
 
         if ($passphrase !== '') {
-            $signatureBase .= '&passphrase=' . urlencode($passphrase);
+            $signatureBase .= '&passphrase='.urlencode($passphrase);
         }
 
         return md5($signatureBase);
@@ -158,10 +162,25 @@ class PaymentController extends Controller
     {
         $payload = $request->post();
 
-        if (!$this->isValidPayfastItnSignature($payload)) {
+        if (! $this->isValidPayfastItnSignature($payload)) {
             Log::warning('PayFast ITN signature validation failed.', ['payload' => $payload]);
 
             return response()->json(['message' => 'Invalid signature'], 400);
+        }
+
+        if (! $this->isValidPayfastSource($request)) {
+            Log::warning('PayFast ITN source validation failed.', [
+                'ip' => $request->ip(),
+                'referer' => $request->headers->get('referer'),
+            ]);
+
+            return response()->json(['message' => 'Invalid source'], 400);
+        }
+
+        if (! $this->isConfirmedByPayfast($payload)) {
+            Log::warning('PayFast ITN server confirmation failed.', ['payload' => $payload]);
+
+            return response()->json(['message' => 'Unable to confirm ITN'], 400);
         }
 
         $paymentId = (int) ($payload['m_payment_id'] ?? 0);
@@ -170,13 +189,13 @@ class PaymentController extends Controller
 
         $payment = Payment::query()->with('registration')->find($paymentId);
 
-        if (!$payment || !$payment->registration) {
+        if (! $payment || ! $payment->registration) {
             Log::warning('PayFast ITN payment/registration not found.', ['payload' => $payload]);
 
             return response()->json(['message' => 'Payment not found'], 404);
         }
 
-        if (!$this->matchesPayment($payment, $amountGross, $payload)) {
+        if (! $this->matchesPayment($payment, $amountGross, $payload)) {
             Log::warning('PayFast ITN data mismatch.', [
                 'payment_id' => $payment->id,
                 'expected_amount' => (float) $payment->amount,
@@ -201,14 +220,14 @@ class PaymentController extends Controller
             success: $success,
             gatewayTransactionId: (string) ($payload['pf_payment_id'] ?? ''),
             gatewayResponse: $payload,
-            failureReason: $success ? null : ('Gateway status: ' . ($payload['payment_status'] ?? 'unknown')),
+            failureReason: $success ? null : ('Gateway status: '.($payload['payment_status'] ?? 'unknown')),
         );
 
         return response()->json(['message' => 'ITN processed']);
     }
 
     /**
-     * @param array<string, mixed> $payload
+     * @param  array<string, mixed>  $payload
      */
     private function isValidPayfastItnSignature(array $payload): bool
     {
@@ -234,7 +253,7 @@ class PaymentController extends Controller
     }
 
     /**
-     * @param array<string, mixed> $payload
+     * @param  array<string, mixed>  $payload
      */
     private function matchesPayment(Payment $payment, float $amountGross, array $payload): bool
     {
@@ -250,5 +269,75 @@ class PaymentController extends Controller
         }
 
         return abs((float) $payment->amount - $amountGross) < 0.01;
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    private function availablePaymentMethods(): array
+    {
+        return array_values(array_filter([
+            'payfast',
+        ]));
+    }
+
+    private function isValidPayfastSource(Request $request): bool
+    {
+        if (! (bool) config('services.payfast.validate_itn_ip', true)) {
+            return true;
+        }
+
+        $referer = (string) $request->headers->get('referer', '');
+        $host = parse_url($referer, PHP_URL_HOST);
+
+        if (! is_string($host) || $host === '') {
+            return false;
+        }
+
+        $validHosts = (array) config('services.payfast.valid_hosts', []);
+        if (! in_array($host, $validHosts, true)) {
+            return false;
+        }
+
+        $validIps = collect($validHosts)
+            ->flatMap(fn (string $validHost) => gethostbynamel($validHost) ?: [])
+            ->unique()
+            ->values()
+            ->all();
+
+        $refererIp = gethostbyname($host);
+
+        return in_array($refererIp, $validIps, true);
+    }
+
+    /**
+     * @param  array<string, mixed>  $payload
+     */
+    private function isConfirmedByPayfast(array $payload): bool
+    {
+        if (! (bool) config('services.payfast.validate_itn_server', true)) {
+            return true;
+        }
+
+        $params = [];
+        foreach ($payload as $key => $value) {
+            if ($key === 'signature' || $value === null || $value === '') {
+                continue;
+            }
+
+            $params[(string) $key] = (string) $value;
+        }
+
+        try {
+            $response = Http::asForm()
+                ->timeout(10)
+                ->post((string) config('services.payfast.validation_url'), $params);
+        } catch (ConnectionException $e) {
+            Log::warning('PayFast validation request failed.', ['error' => $e->getMessage()]);
+
+            return false;
+        }
+
+        return trim($response->body()) === 'VALID';
     }
 }

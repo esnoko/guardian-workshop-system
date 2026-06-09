@@ -3,7 +3,10 @@
 namespace App\Listeners;
 
 use App\Events\RegistrationCreated;
+use App\Mail\RegistrationConfirmationMail;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 
 class SendRegistrationConfirmationEmail
 {
@@ -19,14 +22,27 @@ class SendRegistrationConfirmationEmail
                 'reference' => $registration->reference_number,
             ]);
 
-            // TODO: Implement email notification class
-            // Mail::queue(new RegistrationConfirmationEmail($registration));
-            
-            Log::info('Registration confirmation email queued', [
+            $confirmationUrl = URL::temporarySignedRoute(
+                'registration.confirmation',
+                now()->addDays(7),
+                ['registration' => $registration->id]
+            );
+
+            $paymentUrl = URL::temporarySignedRoute(
+                'payment.start',
+                now()->addDays(7),
+                ['registration' => $registration->id]
+            );
+
+            Mail::to($registration->email_address)->send(
+                new RegistrationConfirmationMail($registration, $confirmationUrl, $paymentUrl)
+            );
+
+            Log::info('Registration confirmation email sent', [
                 'registration_id' => $registration->id,
             ]);
         } catch (\Throwable $e) {
-            Log::error('Failed to queue registration confirmation email', [
+            Log::error('Failed to send registration confirmation email', [
                 'registration_id' => $event->registration->id,
                 'error' => $e->getMessage(),
             ]);
